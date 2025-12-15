@@ -13,6 +13,8 @@ if(WIN32)
     add_executable(Neutronic_Decay
             src/main.cpp
             src/AnimatedSprite.cpp
+            src/Entity.cpp
+            src/Player.cpp
     )
 
     target_link_libraries(Neutronic_Decay
@@ -29,6 +31,8 @@ else()
     add_executable(Neutronic-Decay
             src/main.cpp
             src/AnimatedSprite.cpp
+            src/Entity.cpp
+            src/Player.cpp
     )
 
     target_link_libraries(Neutronic_Decay

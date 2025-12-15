@@ -1,7 +1,7 @@
 #pragma once
 #include "../../include/raylib-cpp.hpp"
 
-const raylib::Vector2 ZERO = Vector2(0, 0); // ZERO
+const raylib::Vector2 ZERO = raylib::Vector2(0, 0); // ZERO
 const raylib::Vector2 BASEVECTOR = raylib::Vector2(0, -1); // UP
 const raylib::Vector2 BASEVECTOR2 = raylib::Vector2(1, 0); // RIGHT
 
