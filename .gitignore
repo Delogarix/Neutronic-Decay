@@ -1,1 +1,7 @@
 .idea
+src/game.exe
+src/game.out
+src/game.data
+src/game.html
+src/game.js
+src/game.wasm
