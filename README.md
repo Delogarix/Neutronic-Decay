@@ -8,5 +8,5 @@ g++ *.cpp -o game.exe -Wall -I ../include/ -L ../lib/Windows/ -lraylib -lgdi32 -
 ```
 To build and test the HTML file :
 ```bash
-em++ -o game.html main.cpp Entity.cpp Player.cpp AnimatedSprite.cpp -Os -Wall ../lib/Web/libraylib.a -I. -I ../include -L. -s USE_GLFW=3 --shell-file ../shell/shell.html -DPLATFORM_WEB --preload-file assets
+em++ -o ../build/game.html main.cpp Entity.cpp Player.cpp AnimatedSprite.cpp -Os -Wall ../lib/Web/libraylib.a -I. -I ../include -L. -s USE_GLFW=3 --shell-file ../shell/shell.html -DPLATFORM_WEB --preload-file assets
 ```
