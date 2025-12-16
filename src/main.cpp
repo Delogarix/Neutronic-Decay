@@ -8,26 +8,29 @@
     #include <emscripten/emscripten.h>
 #endif
 
-// WEB Cmd
-/*
- * em++ -o game.html main.cpp Entity.cpp Player.cpp AnimatedSprite.cpp -Os -Wall ../lib/Web/libraylib.a -I. -I ../include -L. -s USE_GLFW=3 --shell-file ../shell/shell.html -DPLATFORM_WEB --preload-file assets
- */
-
 void UpdateDrawFrame();
 
-int screenWidth = 800;
-int screenHeight = 450;
+int screenWidth = 1500;
+int screenHeight = 800;
 
 raylib::Window window(screenWidth, screenHeight, "Project: Neutronic Decay");
 raylib::Texture2D iridiumTex = LoadTexture("assets/iridium-core.png");
+raylib::Texture2D redArrowTex = LoadTexture("assets/red-arrow.png");
 AnimatedSprite iridium = AnimatedSprite(&iridiumTex, 5, 0, 3.6f, 5, 1);
+AnimatedSprite redArrow = AnimatedSprite(&redArrowTex, 8, 0, 9.5f, 5, 1);
 
-Player player(iridium);
+Player player(redArrow);
+
+void init() {
+    player.position = raylib::Vector2(GetScreenWidth()/2, GetScreenHeight()/2);
+}
 
 int main() {
 
 
     SetTargetFPS(60);
+
+    init();
 
     #if defined(PLATFORM_WEB)
         emscripten_set_main_loop(UpdateDrawFrame, 0, 1);

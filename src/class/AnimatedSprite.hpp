@@ -41,6 +41,7 @@ public:
     void setTexture(raylib::Texture2D *texture);
     void setScale(float scale);
     void lookAt(raylib::Vector2 lookDirection);
+    void rotate(float angle); // Angle in degeres
     void setFramePerSecond(float frameRate);
 
 };

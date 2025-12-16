@@ -75,6 +75,10 @@ void AnimatedSprite::lookAt(raylib::Vector2 lookDirection) {
     this->lookDirection = lookDirection;
 }
 
+void AnimatedSprite::rotate(float angle) {
+    this->lookDirection = this->lookDirection.Rotate(angle * DEG2RAD);
+}
+
 void AnimatedSprite::setFramePerSecond(float frameRate) {
     this->frameRate = frameRate;
 }
