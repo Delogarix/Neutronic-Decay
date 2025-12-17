@@ -4,6 +4,7 @@
 #include "class/Entity.hpp"
 #include "class/Player.hpp"
 #include "class/Arrow.hpp"
+#include "class/Homing.hpp"
 
 #if defined(PLATFORM_WEB)
     #include <emscripten/emscripten.h>
@@ -31,6 +32,7 @@ AnimatedSprite homingElec = AnimatedSprite(&homingElecTex, 8, 0, 13.0f, 7, 1);
 
 Player player(iridium);
 Arrow arrow(redArrow, 900);
+Homing electron(homingElec, &player);
 
 void init() {
     player.position = raylib::Vector2(GetScreenWidth()/2, GetScreenHeight()/2);
@@ -56,13 +58,12 @@ void UpdateDrawFrame() {
     //  -   -   -  // - - - - - UPDATE PART - - - - - //
 
     if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
-        raylib::Vector2 randomDirecton = raylib::Vector2(GetRandomValue(-1, 1), GetRandomValue(-1, 1));
-        arrow.spawn(GetMousePosition(), getRandomVector());
+        electron.spawn(GetMousePosition(), getRandomVector());
     }
 
     player.update(GetFrameTime());
     arrow.update(GetFrameTime());
-    homingElec.update(GetFrameTime());
+    electron.update(GetFrameTime());
 
     BeginDrawing(); // - - - - - DRAW PART - - - - - //
 
@@ -71,7 +72,7 @@ void UpdateDrawFrame() {
     DrawText("Welcome to neutronic-decay !", 220, 200, 20, DARKGREEN);
     player.draw();
     arrow.draw();
-    homingElec.draw(raylib::Vector2(1050, 300));
+    electron.draw();
 
     EndDrawing();
 }

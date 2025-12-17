@@ -16,7 +16,7 @@ if(WIN32)
             src/Entity.cpp
             src/Player.cpp
             src/Arrow.cpp
-            src/Arrow.hpp
+            src/Homing.cpp
     )
 
     target_link_libraries(Neutronic_Decay
@@ -36,7 +36,7 @@ else()
             src/Entity.cpp
             src/Player.cpp
             src/Arrow.cpp
-            src/Arrow.hpp
+            src/Homing.cpp
     )
 
     target_link_libraries(Neutronic_Decay

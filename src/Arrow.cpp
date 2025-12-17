@@ -1,9 +1,7 @@
 
 #include "class/Arrow.hpp"
 
-Arrow::Arrow() {
-
-}
+Arrow::Arrow() { }
 
 Arrow::Arrow(const AnimatedSprite &sprite, float maxSpeed) {
     this->sprite = sprite;
