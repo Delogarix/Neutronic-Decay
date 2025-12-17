@@ -11,7 +11,7 @@ class Homing : public Entity {
     Homing();
     Homing(const AnimatedSprite &sprite, Entity *target);
 
-    void spawn(raylib::Vector2 position, raylib::Vector2 direction);
+    void spawn(raylib::Vector2 position, raylib::Vector2 direction) override;
 
     void update(float deltaTile) override;
 

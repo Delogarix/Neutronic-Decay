@@ -25,6 +25,10 @@ void Player::handleInputs(float deltaTime) {
     #endif
 }
 
+void Player::spawn(raylib::Vector2 position, raylib::Vector2 direction) {
+    this->position = position;
+}
+
 void Player::update(float deltaTime) {
     handleInputs(deltaTime);
     Entity::update(deltaTime);

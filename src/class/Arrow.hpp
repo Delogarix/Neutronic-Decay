@@ -9,7 +9,7 @@ class Arrow : public Entity {
     Arrow();
     Arrow(const AnimatedSprite &sprite, float maxSpeed);
 
-    void spawn(raylib::Vector2 position, raylib::Vector2 direction);
+    void spawn(raylib::Vector2 position, raylib::Vector2 direction) override;
 
     void update(float deltaTime) override;
 

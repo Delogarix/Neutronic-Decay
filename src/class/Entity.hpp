@@ -13,6 +13,8 @@ class Entity {
 
     Entity();
 
+    virtual void spawn(raylib::Vector2 position, raylib::Vector2 direction) = 0;
+
     virtual void update(float deltaTime) ;
 
     virtual void draw();
