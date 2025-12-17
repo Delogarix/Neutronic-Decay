@@ -4,23 +4,23 @@
 // CONSTRUCTOR - - - - - - - - - -
 
 AnimatedSprite::AnimatedSprite()
-    : texture(nullptr), scale(1.0f), rotation(0.0f), rotationOffset(0.0f), lookDirection(BASEVECTOR), framePerLine(1),
+    : texture(nullptr), scale(1.0f), rotation(0.0f), rotationOffset(0.0f), lookDirection(UP), framePerLine(1),
       lineNumber(1), frameWidth(0), frameHeight(0), currentFrame(0), currentLine(0), frameDelta(0), frameRate(1)
 { }
 
 AnimatedSprite::AnimatedSprite(raylib::Texture *texture, float scale, float rotationOffset) : texture(texture),
-    scale(scale), rotation(0), rotationOffset(rotationOffset), lookDirection(BASEVECTOR), framePerLine(1), lineNumber(1), frameWidth(texture->width), frameHeight(texture->height),
+    scale(scale), rotation(0), rotationOffset(rotationOffset), lookDirection(UP), framePerLine(1), lineNumber(1), frameWidth(texture->width), frameHeight(texture->height),
     currentFrame(1), currentLine(1), frameDelta(0), frameRate(0)
 { }
 
 AnimatedSprite::AnimatedSprite(raylib::Texture *texture, unsigned int framePerLine, unsigned int lineNumber)
-    : texture(texture), scale(1), rotation(0), rotationOffset(PI/7), lookDirection(BASEVECTOR), framePerLine(framePerLine),
+    : texture(texture), scale(1), rotation(0), rotationOffset(PI/7), lookDirection(UP), framePerLine(framePerLine),
     lineNumber(lineNumber), frameWidth(texture->width/framePerLine), frameHeight(texture->height/lineNumber), currentFrame(1), currentLine(1),
     frameDelta(0), frameRate(1)
 { }
 
 AnimatedSprite::AnimatedSprite(raylib::Texture *texture, float scale, float rotationOffset, float framePerSecond, float framePerLine, float lineNumber)
-    : texture(texture), scale(scale), rotation(0), rotationOffset(rotationOffset), lookDirection(BASEVECTOR), framePerLine(framePerLine), lineNumber(lineNumber),
+    : texture(texture), scale(scale), rotation(0), rotationOffset(rotationOffset), lookDirection(UP), framePerLine(framePerLine), lineNumber(lineNumber),
     frameWidth(texture->width/framePerLine), frameHeight(texture->height/lineNumber), currentFrame(1), currentLine(1), frameDelta(0), frameRate(framePerSecond)
 { }
 
@@ -48,7 +48,7 @@ void AnimatedSprite::update(float deltaTime) {
 void AnimatedSprite::draw(const raylib::Vector2 position) {
     if (texture != nullptr) {
 
-        rotation = BASEVECTOR.Rotate(rotationOffset).Angle(lookDirection);
+        rotation = UP.Rotate(rotationOffset).Angle(lookDirection);
 
         raylib::Rectangle source = { frameWidth * (currentFrame - 1), frameHeight * (currentLine - 1), frameWidth, frameHeight};
         raylib::Rectangle dest = { position.x , position.y , frameWidth * scale, frameHeight * scale}; //170

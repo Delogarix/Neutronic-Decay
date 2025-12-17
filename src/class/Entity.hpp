@@ -2,12 +2,6 @@
 #include "AnimatedSprite.hpp"
 #include "raylib-cpp.hpp"
 
-enum CollisionSystem {
-    EMPTY = 0,
-    ENEMIES = 1,
-    PLAYER = 2
-};
-
 class Entity {
 
     public:
@@ -16,11 +10,10 @@ class Entity {
     AnimatedSprite sprite;
     float maxSpeed;
 
-    public:
 
     Entity();
 
-    virtual void update(float deltaTime);
+    virtual void update(float deltaTime) ;
 
     virtual void draw();
 };

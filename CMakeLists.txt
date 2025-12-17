@@ -15,6 +15,8 @@ if(WIN32)
             src/AnimatedSprite.cpp
             src/Entity.cpp
             src/Player.cpp
+            src/Arrow.cpp
+            src/Arrow.hpp
     )
 
     target_link_libraries(Neutronic_Decay
@@ -33,6 +35,8 @@ else()
             src/AnimatedSprite.cpp
             src/Entity.cpp
             src/Player.cpp
+            src/Arrow.cpp
+            src/Arrow.hpp
     )
 
     target_link_libraries(Neutronic_Decay
