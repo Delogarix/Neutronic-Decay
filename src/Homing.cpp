@@ -5,6 +5,7 @@ Homing::Homing() : target(nullptr), attractForce(5) { }
 Homing::Homing(const AnimatedSprite &sprite, Entity *target) : target(target), attractForce(1500) {
     this->sprite = sprite;
     maxSpeed = 600;
+    radius = 8;
 }
 
 void Homing::spawn(raylib::Vector2 position, raylib::Vector2 direction) {

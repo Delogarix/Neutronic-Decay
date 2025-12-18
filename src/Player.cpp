@@ -7,6 +7,7 @@ Player::Player() : isMoving(false), accelerationScale(1)  {
 
 Player::Player(const AnimatedSprite &sprite) : isMoving(false), accelerationScale(500) {
     this->sprite = sprite;
+    this->radius = 50;
 }
 
 

@@ -8,15 +8,18 @@ class Entity {
 
     raylib::Vector2 position, speed, acceleration;
     AnimatedSprite sprite;
-    float maxSpeed;
+    float radius, maxSpeed;
 
 
     Entity();
+
+    bool isColliding(Entity const *targetEntity); // le pointeur ne peux pas pointer une autre ressource
 
     virtual void spawn(raylib::Vector2 position, raylib::Vector2 direction) = 0;
 
     virtual void update(float deltaTime) ;
 
     virtual void draw();
+    void drawHitbox();
 };
 

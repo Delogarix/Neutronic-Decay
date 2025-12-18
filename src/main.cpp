@@ -23,33 +23,31 @@ void UpdateDrawFrame();
 int screenWidth = 1500;
 int screenHeight = 800;
 
-const unsigned int maxObjects = 50000;
-std::array<Entity *, maxObjects> objects;
+bool freeze = false;
+
+const unsigned int MAXOBJECTS = 50000;
+std::array<Entity *, MAXOBJECTS> objects;
 
 raylib::Window window(screenWidth, screenHeight, "Project: Neutronic Decay");
 raylib::Texture2D iridiumTex = LoadTexture("assets/iridium-core.png");
 raylib::Texture2D redArrowTex = LoadTexture("assets/red-arrow.png");
 raylib::Texture2D homingElecTex = LoadTexture("assets/homing-elec.png");
-AnimatedSprite iridium = AnimatedSprite(&iridiumTex, 8, 0, 3.6f, 5, 1);
-AnimatedSprite redArrow = AnimatedSprite(&redArrowTex, 4, PI/4, 9.5f, 5, 1);
-AnimatedSprite homingElec = AnimatedSprite(&homingElecTex, 1, 0, 13.0f, 7, 1);
+AnimatedSprite iridium = AnimatedSprite(&iridiumTex, 6, 0, 3.6f, 5, 1);
+AnimatedSprite redArrow = AnimatedSprite(&redArrowTex, 2, PI/4, 9.5f, 5, 1);
+AnimatedSprite homingElec = AnimatedSprite(&homingElecTex, 2, 0, 13.0f, 7, 1);
 
 Player player(iridium);
-Arrow arrow(redArrow, 900);
-Homing electron(homingElec, &player);
 
 int getFreeIndex();
+void resolveCollision(Entity *player, Entity *&bullet);
 
 void init() {
     player.position = raylib::Vector2(GetScreenWidth()/2, GetScreenHeight()/2);
-
-    for (int i = 0; i < maxObjects; i++) {
+    for (int i = 0; i < MAXOBJECTS; i++) {
         objects[i] = nullptr;
     }
-
     objects[0] = &player;
-    objects[1] = &arrow;
-    objects[2] = &electron;
+    objects[1] = new Arrow(redArrow, 900);
 }
 
 int main() {
@@ -71,6 +69,8 @@ int main() {
 void UpdateDrawFrame() {
     //  -   -   -  // - - - - - UPDATE PART - - - - - //
 
+    if (IsKeyPressed(KEY_P)) freeze = !freeze;
+
     if (IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
         int i = getFreeIndex();
         objects[i] = new Arrow(redArrow, 900);
@@ -83,20 +83,24 @@ void UpdateDrawFrame() {
         objects[i]->spawn(GetMousePosition(), getRandomVector());
     }
 
-    for (unsigned int i = 0; i < maxObjects; i++) {
-        if (objects[i] != nullptr) {
+    player.update(GetFrameTime());
+    for (unsigned int i = 1; i < MAXOBJECTS; i++) {
+        if (objects[i] != nullptr && !freeze) {
             objects[i]->update(GetFrameTime());
+            resolveCollision(&player, objects[i]);
         }
     }
+
 
     BeginDrawing(); // - - - - - DRAW PART - - - - - //
 
     window.ClearBackground(RAYWHITE);
 
     DrawText("Welcome to neutronic-decay !", 220, 200, 20, DARKGREEN);
-    for (unsigned int i = 0; i < maxObjects; i++) {
+    for (unsigned int i = 0; i < MAXOBJECTS; i++) {
         if (objects[i] != nullptr) {
             objects[i]->draw();
+            objects[i]->drawHitbox();
         }
     }
 
@@ -106,7 +110,7 @@ void UpdateDrawFrame() {
 }
 
 int getFreeIndex() {
-    for (int i = 0; i < maxObjects; i++) {
+    for (int i = 0; i < MAXOBJECTS; i++) {
         if (objects[i] == nullptr) {
             std::cout << "i : " << i << std::endl;
             return i;
@@ -114,4 +118,12 @@ int getFreeIndex() {
     }
     std::cout << "No more space in objects lists!" << std::endl;
     return -1;
+}
+
+void resolveCollision(Entity *player, Entity *&bullet) {
+    if (bullet != nullptr && player->isColliding(bullet)) {
+        std::cout << "Player take damage !" << std::endl;
+        delete bullet;
+        bullet = nullptr;
+    }
 }
