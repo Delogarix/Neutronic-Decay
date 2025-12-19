@@ -447,7 +447,7 @@ typedef struct BoundingBox {
 } BoundingBox;
 
 // Wave, audio wave data
-typedef struct Wave {
+typedef struct WaveManager {
     unsigned int frameCount;    // Total number of frames (considering channels)
     unsigned int sampleRate;    // Frequency (samples per second)
     unsigned int sampleSize;    // Bit depth (bits per sample): 8, 16, 32 (24 not supported)

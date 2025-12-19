@@ -17,6 +17,7 @@ if(WIN32)
             src/Player.cpp
             src/Arrow.cpp
             src/Homing.cpp
+            src/Sequencer.cpp
     )
 
     target_link_libraries(Neutronic_Decay
@@ -37,6 +38,7 @@ else()
             src/Player.cpp
             src/Arrow.cpp
             src/Homing.cpp
+            src/Sequencer.cpp
     )
 
     target_link_libraries(Neutronic_Decay

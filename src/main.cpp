@@ -6,6 +6,7 @@
 #include "class/Player.hpp"
 #include "class/Arrow.hpp"
 #include "class/Homing.hpp"
+#include "class/Sequencer.hpp"
 
 #if defined(PLATFORM_WEB)
     #include <emscripten/emscripten.h>
@@ -30,6 +31,8 @@ float sliderX, sliderSpeed;
 const unsigned int MAXOBJECTS = 50000;
 std::array<Entity *, MAXOBJECTS> objects;
 
+Sequencer sequencer;
+
 raylib::Window window(screenWidth, screenHeight, "Project: Neutronic Decay");
 raylib::Texture2D iridiumTex = LoadTexture("assets/iridium-core.png");
 raylib::Texture2D redArrowTex = LoadTexture("assets/red-arrow.png");
@@ -52,12 +55,15 @@ void init() {
     objects[0] = &player;
     sliderX = 400;
     sliderSpeed = 1;
+    sequencer = Sequencer("wave1.txt");
+    sequencer.start();
 }
 
 int main() {
 
     init();
     SetTargetFPS(1200);
+    SetWindowState(FLAG_WINDOW_RESIZABLE);
 
     #if defined(PLATFORM_WEB)
         emscripten_set_main_loop(UpdateDrawFrame, 0, 1);
@@ -72,6 +78,8 @@ int main() {
 
 void UpdateDrawFrame() {
     //  -   -   -  // - - - - - UPDATE PART - - - - - //
+
+    sequencer.update(GetFrameTime());
 
     if (IsKeyPressed(KEY_P)) freeze = !freeze;
 
@@ -116,7 +124,6 @@ void UpdateDrawFrame() {
 int getFreeIndex() {
     for (int i = 0; i < MAXOBJECTS; i++) {
         if (objects[i] == nullptr) {
-            std::cout << "i : " << i << std::endl;
             return i;
         }
     }
@@ -126,7 +133,6 @@ int getFreeIndex() {
 
 void resolveCollision(Entity *player, Entity *&bullet) {
     if (bullet != nullptr && player->isColliding(bullet)) {
-        std::cout << "Player take damage !" << std::endl;
         delete bullet;
         bullet = nullptr;
     }
@@ -152,7 +158,6 @@ void bulletRandomWave(Entity *target) {
     raylib::Vector2 spawnPoint, targetDirection;
     int side = GetRandomValue(0, 3); // LEFT - UP - RIGHT - DOWN
     int bulletType = GetRandomValue(0, 2);
-    std::cout << "side : " << side << std::endl;
     if (side == 0) spawnPoint = raylib::Vector2(0, GetRandomValue(0, GetScreenHeight()));
     if (side == 1) spawnPoint = raylib::Vector2(GetRandomValue(0, GetScreenWidth()), 0);
     if (side == 2) spawnPoint = raylib::Vector2(GetScreenWidth(), GetRandomValue(0, GetScreenHeight()));
