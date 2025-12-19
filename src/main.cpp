@@ -20,8 +20,8 @@ raylib::Vector2 getRandomVector() {
 
 void UpdateDrawFrame();
 
-int screenWidth = 1500;
-int screenHeight = 800;
+int screenWidth = 1300;
+int screenHeight = 900;
 
 bool freeze = false;
 
@@ -44,15 +44,12 @@ int getFreeIndex();
 void resolveCollision(Entity *player, Entity *&bullet);
 void drawActionBar();
 void drawSlider();
+void bulletRandomWave(Entity *target);
 
 void init() {
     player.position = raylib::Vector2(GetScreenWidth()/2, GetScreenHeight()/2);
-    for (int i = 0; i < MAXOBJECTS; i++) {
-        objects[i] = nullptr;
-    }
+    for (int i = 0; i < MAXOBJECTS; i++) { objects[i] = nullptr; }
     objects[0] = &player;
-    objects[1] = new Arrow(redArrow, 900);
-
     sliderX = 400;
     sliderSpeed = 1;
 }
@@ -78,10 +75,8 @@ void UpdateDrawFrame() {
 
     if (IsKeyPressed(KEY_P)) freeze = !freeze;
 
-    if (IsMouseButtonDown(MOUSE_BUTTON_LEFT)) {
-        int i = getFreeIndex();
-        objects[i] = new Arrow(redArrow, 900);
-        objects[i]->spawn(GetMousePosition(), getRandomVector());
+    if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
+        bulletRandomWave(&player);
     }
 
     if (IsMouseButtonDown(MOUSE_BUTTON_RIGHT)) {
@@ -103,7 +98,6 @@ void UpdateDrawFrame() {
 
     window.ClearBackground(RAYWHITE);
 
-    DrawText("Welcome to neutronic-decay !", 220, 200, 20, DARKGREEN);
     for (unsigned int i = 0; i < MAXOBJECTS; i++) {
         if (objects[i] != nullptr) {
             objects[i]->draw();
@@ -151,4 +145,23 @@ void drawSlider() {
     if (sliderX > 1100) sliderSpeed = sliderSpeed * - 1;
     if (sliderX < 350) sliderSpeed = sliderSpeed * - 1;
 
+}
+
+void bulletRandomWave(Entity *target) {
+
+    raylib::Vector2 spawnPoint, targetDirection;
+    int side = GetRandomValue(0, 3); // LEFT - UP - RIGHT - DOWN
+    int bulletType = GetRandomValue(0, 2);
+    std::cout << "side : " << side << std::endl;
+    if (side == 0) spawnPoint = raylib::Vector2(0, GetRandomValue(0, GetScreenHeight()));
+    if (side == 1) spawnPoint = raylib::Vector2(GetRandomValue(0, GetScreenWidth()), 0);
+    if (side == 2) spawnPoint = raylib::Vector2(GetScreenWidth(), GetRandomValue(0, GetScreenHeight()));
+    if (side == 3) spawnPoint = raylib::Vector2(GetRandomValue(0, GetScreenWidth()), GetScreenHeight());
+    targetDirection = target->position - spawnPoint;
+
+    int i = getFreeIndex();
+    if (bulletType != 0) objects[i] = new Arrow(redArrow, 900);
+    else objects[i] = new Homing(homingElec, target);
+
+    objects[i]->spawn(spawnPoint, targetDirection);
 }
