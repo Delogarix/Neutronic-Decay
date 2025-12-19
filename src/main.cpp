@@ -25,6 +25,8 @@ int screenHeight = 800;
 
 bool freeze = false;
 
+float sliderX, sliderSpeed;
+
 const unsigned int MAXOBJECTS = 50000;
 std::array<Entity *, MAXOBJECTS> objects;
 
@@ -40,6 +42,8 @@ Player player(iridium);
 
 int getFreeIndex();
 void resolveCollision(Entity *player, Entity *&bullet);
+void drawActionBar();
+void drawSlider();
 
 void init() {
     player.position = raylib::Vector2(GetScreenWidth()/2, GetScreenHeight()/2);
@@ -48,6 +52,9 @@ void init() {
     }
     objects[0] = &player;
     objects[1] = new Arrow(redArrow, 900);
+
+    sliderX = 400;
+    sliderSpeed = 1;
 }
 
 int main() {
@@ -100,9 +107,12 @@ void UpdateDrawFrame() {
     for (unsigned int i = 0; i < MAXOBJECTS; i++) {
         if (objects[i] != nullptr) {
             objects[i]->draw();
-            objects[i]->drawHitbox();
+            //objects[i]->drawHitbox();
         }
     }
+
+    drawActionBar();
+    drawSlider();
 
     DrawFPS(30, 30);
 
@@ -126,4 +136,19 @@ void resolveCollision(Entity *player, Entity *&bullet) {
         delete bullet;
         bullet = nullptr;
     }
+}
+
+void drawActionBar() {
+    int length = 800;
+    DrawRectangleGradientH(GetScreenWidth()/2 - length/2, GetScreenHeight() - 60,length, 50 , RED, BLUE);
+}
+
+void drawSlider() {
+
+    DrawRectangle(sliderX, GetScreenHeight() - 55, 10, 20, BLACK);
+    if (IsKeyPressed(KEY_SPACE)) DrawRectangle(sliderX, GetScreenHeight() - 55, 15, 30, WHITE);
+    sliderX += sliderSpeed * 0.5;
+    if (sliderX > 1100) sliderSpeed = sliderSpeed * - 1;
+    if (sliderX < 350) sliderSpeed = sliderSpeed * - 1;
+
 }
