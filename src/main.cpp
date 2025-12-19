@@ -32,6 +32,7 @@ const unsigned int MAXOBJECTS = 50000;
 std::array<Entity *, MAXOBJECTS> objects;
 
 Sequencer sequencer;
+std::string waveFileName = "wave/wave1.txt";
 
 raylib::Window window(screenWidth, screenHeight, "Project: Neutronic Decay");
 raylib::Texture2D iridiumTex = LoadTexture("assets/iridium-core.png");
@@ -55,7 +56,7 @@ void init() {
     objects[0] = &player;
     sliderX = 400;
     sliderSpeed = 1;
-    sequencer = Sequencer("wave1.txt");
+    sequencer = Sequencer(waveFileName);
     sequencer.start();
 }
 
