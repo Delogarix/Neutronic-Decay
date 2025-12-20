@@ -83,3 +83,4 @@ void AnimatedSprite::setFramePerSecond(float frameRate) {
     this->frameRate = frameRate;
 }
 
+

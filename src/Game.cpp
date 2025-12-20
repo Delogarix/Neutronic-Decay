@@ -13,11 +13,33 @@ unsigned int Game::getFreeIndex() {
     return -1;
 }
 
+void Game::flushObjects() {
+    for (unsigned int i = 1; i < MAXOBJECTS; i++) {
+        if (objects[i] != nullptr) {
+            delete objects[i];
+            objects[i] = nullptr;
+        }
+    }
+}
+
 void Game::resolveCollision(Entity *player, Entity *&bullet) {
     if (bullet != nullptr && player->isColliding(bullet) && player != bullet) {
+        player->onReceivingHit();
+        bullet->onGivingHit();
         delete bullet;
         bullet = nullptr;
     }
+}
+
+void Game::displayGameInfo() {
+    DrawText(TextFormat("%f", sequencer.getTimeElapsed()), GetScreenWidth()/2 - 60, 20, 30, BLACK);
+    DrawText(TextFormat("%i", player.getHeath()), GetScreenWidth()/2 - 11, 60, 20, VIOLET);
+}
+
+void Game::reStart() {
+    flushObjects();
+    sequencer.reStart();
+    player = Player(iridiumS);
 }
 
 Game::Game() : boxLength(800), isFreezed(false) , sequencer("wave/wave1.txt", this){
@@ -32,10 +54,10 @@ void Game::init() { // Needs to be called after window is created
     redArrowTex = LoadTexture("assets/red-arrow.png");
     homingElecTex = LoadTexture("assets/homing-elec.png");
     boulderTex = LoadTexture("assets/aqua-sphere.png");
-    iridiumS = AnimatedSprite(&iridiumTex, 6, 0, 3.6f, 5, 1);
+    iridiumS = AnimatedSprite(&iridiumTex, 2, 0, 3.6f, 5, 1);
     redArrowS = AnimatedSprite(&redArrowTex, 2, PI/4, 9.5f, 5, 1);
     homingElecS = AnimatedSprite(&homingElecTex, 2, 0, 13.0f, 7, 1);
-    boulderS = AnimatedSprite(&boulderTex, 5, 0, 13.0f, 7, 1);
+    boulderS = AnimatedSprite(&boulderTex, 5, 0, 23.0f, 7, 1);
     player.sprite = iridiumS;
     sequencer.start();
 }
@@ -43,20 +65,23 @@ void Game::init() { // Needs to be called after window is created
 
 void Game::update(float deltaTime) {
 
-    sequencer.update(deltaTime);
 
     if (IsKeyPressed(KEY_P)) isFreezed = !isFreezed;
 
-    if (IsKeyPressed(KEY_R)) sequencer.reStart();
+    if (IsKeyPressed(KEY_R)) reStart();
 
-    if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
-        bulletRandomWave(&player);
-    }
-
-    for (unsigned int i = 0; i < MAXOBJECTS; i++) {
-        if (objects[i] != nullptr && !isFreezed) {
-            objects[i]->update(deltaTime);
-            resolveCollision(&player, objects[i]);
+    if (!isFreezed) {
+        if (player.isDead()) reStart();
+        sequencer.update(deltaTime);
+        for (unsigned int i = 0; i < MAXOBJECTS; i++) {
+            if (objects[i] != nullptr) {
+                objects[i]->update(deltaTime);
+                if (objects[i]->lifeTimeExceeded()) {
+                    delete objects[i];
+                    objects[i] = nullptr;
+                }
+                resolveCollision(&player, objects[i]);
+            }
         }
     }
 }
@@ -68,6 +93,7 @@ void Game::draw() {
             //objects[i]->drawHitbox();
         }
     }
+    displayGameInfo();
 }
 
 void Game::bulletRandomWave(Entity *target) {
@@ -78,7 +104,7 @@ void Game::bulletRandomWave(Entity *target) {
     if (side == 1) spawnPoint = raylib::Vector2(GetRandomValue(0, GetScreenWidth()), 0);
     if (side == 2) spawnPoint = raylib::Vector2(GetScreenWidth(), GetRandomValue(0, GetScreenHeight()));
     if (side == 3) spawnPoint = raylib::Vector2(GetRandomValue(0, GetScreenWidth()), GetScreenHeight());
-    targetDirection = target->position - spawnPoint;
+    targetDirection = target->getPosition() - spawnPoint;
 
     int i = getFreeIndex();
     if (bulletType != 0) objects[i] = new Arrow(redArrowS, 900);
@@ -89,9 +115,9 @@ void Game::bulletRandomWave(Entity *target) {
 
 Entity * Game::convertTypeToBullet(std::string type) {
     Entity *newObject = nullptr;
-    if (type == "ARROW") newObject = new Arrow(redArrowS, 750);
+    if (type == "ARROW") newObject = new Arrow(redArrowS, 600);
     else if (type == "HOMING") newObject = new Homing(homingElecS, &player);
-    else if (type == "BOULDER") newObject = new Arrow(boulderS, 200);
+    else if (type == "BOULDER") newObject = new Arrow(boulderS, 150);
     else { std::cout << "ERROR: Wrong bullet type read : " << type << std::endl; }
     return newObject;
 }
@@ -103,7 +129,7 @@ void Game::spawnBullet(Entity *bullet) {
     if (side == 1) spawnPoint = raylib::Vector2(GetRandomValue(0, GetScreenWidth()), 0);
     if (side == 2) spawnPoint = raylib::Vector2(GetScreenWidth(), GetRandomValue(0, GetScreenHeight()));
     if (side == 3) spawnPoint = raylib::Vector2(GetRandomValue(0, GetScreenWidth()), GetScreenHeight());
-    raylib::Vector2 targetDirection = player.position - spawnPoint;
+    raylib::Vector2 targetDirection = player.getPosition() - spawnPoint;
     targetDirection = offsetVectorAngle(targetDirection, 15);
     if (bullet != nullptr) {
         unsigned int i = getFreeIndex();

@@ -2,16 +2,28 @@
 #include "class/Player.hpp"
 #include "raylib-cpp.hpp"
 
-Player::Player() : isMoving(false), accelerationScale(500)  {
+void Player::onReceivingHit() {
+    this->health--;
+}
+
+void Player::onGivingHit() {
+
+}
+
+Player::Player() : isMoving(false), health(11), accelerationScale(500)  {
     this->radius = 50;
     this->position = raylib::Vector2(GetScreenWidth()/2, GetScreenHeight()/2);
 }
 
-Player::Player(const AnimatedSprite &sprite) : isMoving(false), accelerationScale(500) {
+Player::Player(const AnimatedSprite &sprite) : isMoving(false), health(11), accelerationScale(500) {
     this->sprite = sprite;
     this->radius = 50;
     this->position = raylib::Vector2(GetScreenWidth()/2, GetScreenHeight()/2);
 }
+
+bool Player::isDead() { return this->health < 1; }
+
+unsigned int Player::getHeath() const { return this->health; }
 
 
 void Player::handleInputs(float deltaTime) {

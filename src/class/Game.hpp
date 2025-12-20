@@ -26,8 +26,10 @@ class Game {
 
     unsigned int getFreeIndex();
 
+    void flushObjects();
     void resolveCollision(Entity* player, Entity *&bullet);
-
+    void displayGameInfo();
+    void reStart();
 
     public:
 

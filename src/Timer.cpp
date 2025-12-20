@@ -1,4 +1,5 @@
 #include "class/Timer.hpp"
+#include "raylib-cpp.hpp"
 
 // - - - - - CONSTRUCTORS - - - - - 
 

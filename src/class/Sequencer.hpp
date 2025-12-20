@@ -16,16 +16,18 @@ class Sequencer {
 
     std::queue<Event> events;
     std::string fileName;
-    float startTime;
+    float startTime, passedTime;
     bool hasStarted;
     Game *owner;
 
-    float getTimeElapsed();
+
 
     public:
 
     Sequencer();
     Sequencer(std::string fileName, Game *owner);
+
+    float getTimeElapsed();
 
     void readFile(std::string fileName);
 

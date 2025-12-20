@@ -3,11 +3,11 @@
 #include "class/Game.hpp"
 #include <iostream>
 
-float Sequencer::getTimeElapsed() { return GetTime() - this->startTime; }
+float Sequencer::getTimeElapsed() { return passedTime - this->startTime; }
 
-Sequencer::Sequencer() : fileName("wave/wave1.txt"), startTime(GetTime()), hasStarted(false), owner(nullptr) { }
+Sequencer::Sequencer() : fileName("wave/wave1.txt"), startTime(GetTime()), passedTime(0), hasStarted(false), owner(nullptr) { }
 
-Sequencer::Sequencer(std::string fileName, Game *owner) : fileName(fileName), startTime(GetTime()), hasStarted(false), owner(owner) {
+Sequencer::Sequencer(std::string fileName, Game *owner) : fileName(fileName), startTime(GetTime()), passedTime(0), hasStarted(false), owner(owner) {
     this->readFile(fileName);
 }
 
@@ -28,7 +28,8 @@ void Sequencer::readFile(std::string fileName) {
 }
 
 void Sequencer::start() {
-    this->startTime = GetTime();
+    this->startTime = 0;
+    this->passedTime = 0;
     this->hasStarted = true;
 }
 
@@ -41,11 +42,10 @@ void Sequencer::reStart() {
 }
 
 void Sequencer::update(float deltaTime) {
-
+    passedTime += deltaTime;
     if (!this->events.empty() && this->getTimeElapsed() > this->events.front().timeCode) {
         std::string type = this->events.front().type;
         unsigned int amount = this->events.front().amount;
-        //std::cout << type << " * " << amount << std::endl;
 
         if (owner != nullptr) owner->spawnBullets(type, amount);
         this->events.pop();
