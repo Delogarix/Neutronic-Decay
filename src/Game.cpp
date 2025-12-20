@@ -60,6 +60,11 @@ void Game::init() { // Needs to be called after window is created
     boulderS = AnimatedSprite(&boulderTex, 5, 0, 23.0f, 7, 1);
     player.sprite = iridiumS;
     sequencer.start();
+
+    std::cout << " - [Survive] 60 seconds to win" << std::endl;
+    std::cout << " - [ZQSD]    Deplacement" << std::endl;
+    std::cout << " - [R]       Recommencer" << std::endl;
+    std::cout << " - [P]       Pause" << std::endl;
 }
 
 
@@ -117,7 +122,7 @@ Entity * Game::convertTypeToBullet(std::string type) {
     Entity *newObject = nullptr;
     if (type == "ARROW") newObject = new Arrow(redArrowS, 600);
     else if (type == "HOMING") newObject = new Homing(homingElecS, &player);
-    else if (type == "BOULDER") newObject = new Arrow(boulderS, 150);
+    else if (type == "BOULDER") newObject = new Arrow(boulderS, 150, 68);
     else { std::cout << "ERROR: Wrong bullet type read : " << type << std::endl; }
     return newObject;
 }

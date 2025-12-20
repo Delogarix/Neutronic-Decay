@@ -22,8 +22,8 @@ raylib::Vector2 getRandomVector() {
 
 void UpdateDrawFrame();
 
-int screenWidth = 1300;
-int screenHeight = 900;
+int screenWidth = 900;
+int screenHeight = 850;
 
 float sliderX, sliderSpeed;
 
@@ -68,12 +68,9 @@ void UpdateDrawFrame() {
 
     BeginDrawing(); // - - - - - DRAW PART - - - - - //
 
-    window.ClearBackground(RAYWHITE);
+    window.ClearBackground(LIGHTGRAY);
 
     game.draw();
-
-    drawActionBar();
-    drawSlider();
 
     DrawFPS(30, 30);
 

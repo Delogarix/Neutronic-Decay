@@ -33,6 +33,6 @@ void Entity::draw() {
 }
 
 void Entity::drawHitbox() {
-    raylib::Color color = raylib::Color(0, 0, 120, 100);
+    raylib::Color color = raylib::Color(125, 120, 120, 125);
     DrawCircle(this->position.x, this->position.y, this->radius, color);
 }

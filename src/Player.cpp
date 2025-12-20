@@ -11,13 +11,13 @@ void Player::onGivingHit() {
 }
 
 Player::Player() : isMoving(false), health(11), accelerationScale(500)  {
-    this->radius = 50;
+    this->radius = 14;
     this->position = raylib::Vector2(GetScreenWidth()/2, GetScreenHeight()/2);
 }
 
 Player::Player(const AnimatedSprite &sprite) : isMoving(false), health(11), accelerationScale(500) {
     this->sprite = sprite;
-    this->radius = 50;
+    this->radius = 14;
     this->position = raylib::Vector2(GetScreenWidth()/2, GetScreenHeight()/2);
 }
 
