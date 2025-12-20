@@ -2,12 +2,13 @@
 #include "class/Player.hpp"
 #include "raylib-cpp.hpp"
 
-Player::Player() : isMoving(false), accelerationScale(1)  {
+Player::Player() : isMoving(false), accelerationScale(500)  {
 }
 
 Player::Player(const AnimatedSprite &sprite) : isMoving(false), accelerationScale(500) {
     this->sprite = sprite;
     this->radius = 50;
+    this->position = raylib::Vector2(GetScreenWidth()/2, GetScreenHeight()/2);
 }
 
 

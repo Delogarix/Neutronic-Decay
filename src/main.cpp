@@ -5,6 +5,7 @@
 #include "class/Entity.hpp"
 #include "class/Player.hpp"
 #include "class/Arrow.hpp"
+#include "class/Game.hpp"
 #include "class/Homing.hpp"
 #include "class/Sequencer.hpp"
 
@@ -28,8 +29,8 @@ bool freeze = false;
 
 float sliderX, sliderSpeed;
 
-const unsigned int MAXOBJECTS = 50000;
-std::array<Entity *, MAXOBJECTS> objects;
+const unsigned int MAXOBJECTS1 = 50000;
+std::array<Entity *, MAXOBJECTS1> objects;
 
 Sequencer sequencer;
 std::string waveFileName = "wave/wave1.txt";
@@ -44,6 +45,8 @@ AnimatedSprite homingElec = AnimatedSprite(&homingElecTex, 2, 0, 13.0f, 7, 1);
 
 Player player(iridium);
 
+Game game;
+
 int getFreeIndex();
 void resolveCollision(Entity *player, Entity *&bullet);
 void drawActionBar();
@@ -51,13 +54,13 @@ void drawSlider();
 void bulletRandomWave(Entity *target);
 
 void init() {
-    player.position = raylib::Vector2(GetScreenWidth()/2, GetScreenHeight()/2);
     for (int i = 0; i < MAXOBJECTS; i++) { objects[i] = nullptr; }
     objects[0] = &player;
     sliderX = 400;
     sliderSpeed = 1;
-    sequencer = Sequencer(waveFileName);
+    sequencer = Sequencer(waveFileName, nullptr);
     sequencer.start();
+    game.init();
 }
 
 int main() {
@@ -80,12 +83,14 @@ int main() {
 void UpdateDrawFrame() {
     //  -   -   -  // - - - - - UPDATE PART - - - - - //
 
+    game.update(GetFrameTime());
+
     sequencer.update(GetFrameTime());
 
     if (IsKeyPressed(KEY_P)) freeze = !freeze;
 
     if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
-        bulletRandomWave(&player);
+        //bulletRandomWave(&player);
     }
 
     if (IsMouseButtonDown(MOUSE_BUTTON_RIGHT)) {
@@ -114,6 +119,8 @@ void UpdateDrawFrame() {
         }
     }
 
+    game.draw();
+
     drawActionBar();
     drawSlider();
 
@@ -123,7 +130,7 @@ void UpdateDrawFrame() {
 }
 
 int getFreeIndex() {
-    for (int i = 0; i < MAXOBJECTS; i++) {
+    for (int i = 0; i < MAXOBJECTS1; i++) {
         if (objects[i] == nullptr) {
             return i;
         }

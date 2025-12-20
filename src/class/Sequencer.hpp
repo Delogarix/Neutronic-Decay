@@ -3,11 +3,8 @@
 #include <fstream>
 #include <queue>
 
-enum ProjectileType {
-    ARROW = 0,
-    HOMING = 1,
-    BOULDER = 2
-};
+
+class Game;
 
 struct Event {
     float timeCode;
@@ -20,13 +17,14 @@ class Sequencer {
     std::queue<Event> events;
     float startTime;
     bool hasStarted;
+    Game *owner;
 
     float getTimeElapsed();
 
     public:
 
     Sequencer();
-    Sequencer(std::string fileName);
+    Sequencer(std::string fileName, Game *owner);
 
     void readFile(std::string fileName);
 

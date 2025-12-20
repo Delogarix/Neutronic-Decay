@@ -1,13 +1,13 @@
 
 #include "class/Sequencer.hpp"
-
+#include "class/Game.hpp"
 #include <iostream>
 
 float Sequencer::getTimeElapsed() { return GetTime() - this->startTime; }
 
-Sequencer::Sequencer() :startTime(GetTime()), hasStarted(false) { }
+Sequencer::Sequencer() :startTime(GetTime()), hasStarted(false), owner(nullptr) { }
 
-Sequencer::Sequencer(std::string fileName) : startTime(GetTime()), hasStarted(false) {
+Sequencer::Sequencer(std::string fileName, Game *owner) : startTime(GetTime()), hasStarted(false), owner(owner) {
     this->readFile(fileName);
 }
 
@@ -36,6 +36,8 @@ void Sequencer::update(float deltaTime) {
 
     if (!this->events.empty() && this->getTimeElapsed() > this->events.front().timeCode) {
         std::cout << this->events.front().type << " * " << this->events.front().amount << std::endl;
+        // game->spawnBullets(std::string type, unsigned int amount);
+        if (owner != nullptr) owner->bulletRandomWave(&owner->player);
         this->events.pop();
     }
 
