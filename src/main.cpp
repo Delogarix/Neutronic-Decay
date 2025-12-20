@@ -34,6 +34,9 @@ Game game;
 void drawActionBar();
 void drawSlider();
 
+raylib::Texture2D boulderTex = LoadTexture("assets/aqua-sphere.png");
+AnimatedSprite boulderS = AnimatedSprite(&boulderTex, 6, 0, 10.0f, 7, 1);
+
 
 void init() {
     sliderX = 400;

@@ -5,9 +5,9 @@
 
 float Sequencer::getTimeElapsed() { return GetTime() - this->startTime; }
 
-Sequencer::Sequencer() :startTime(GetTime()), hasStarted(false), owner(nullptr) { }
+Sequencer::Sequencer() : fileName("wave/wave1.txt"), startTime(GetTime()), hasStarted(false), owner(nullptr) { }
 
-Sequencer::Sequencer(std::string fileName, Game *owner) : startTime(GetTime()), hasStarted(false), owner(owner) {
+Sequencer::Sequencer(std::string fileName, Game *owner) : fileName(fileName), startTime(GetTime()), hasStarted(false), owner(owner) {
     this->readFile(fileName);
 }
 
@@ -30,6 +30,14 @@ void Sequencer::readFile(std::string fileName) {
 void Sequencer::start() {
     this->startTime = GetTime();
     this->hasStarted = true;
+}
+
+void Sequencer::reStart() {
+    std::queue<Event> empty;
+    events.swap(empty);
+    readFile(this->fileName);
+    start();
+    std::cout << "Restarting wave : " << fileName << std::endl;
 }
 
 void Sequencer::update(float deltaTime) {

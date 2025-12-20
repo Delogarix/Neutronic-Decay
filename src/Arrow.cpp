@@ -6,7 +6,13 @@ Arrow::Arrow() { }
 Arrow::Arrow(const AnimatedSprite &sprite, float maxSpeed) {
     this->sprite = sprite;
     this->maxSpeed = maxSpeed;
-    radius = 8;
+    this->radius = 8;
+}
+
+Arrow::Arrow(const AnimatedSprite &sprite, float maxSpeed, float radius) {
+    this->sprite = sprite;
+    this->maxSpeed = maxSpeed;
+    this->radius = radius;
 }
 
 void Arrow::spawn(raylib::Vector2 position, raylib::Vector2 direction) {

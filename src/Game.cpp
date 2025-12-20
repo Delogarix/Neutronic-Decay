@@ -31,11 +31,11 @@ void Game::init() { // Needs to be called after window is created
     iridiumTex = LoadTexture("assets/iridium-core.png");
     redArrowTex = LoadTexture("assets/red-arrow.png");
     homingElecTex = LoadTexture("assets/homing-elec.png");
-    boulderTex = LoadTexture("assets/red-arrow.png"); // temp test
+    boulderTex = LoadTexture("assets/aqua-sphere.png");
     iridiumS = AnimatedSprite(&iridiumTex, 6, 0, 3.6f, 5, 1);
     redArrowS = AnimatedSprite(&redArrowTex, 2, PI/4, 9.5f, 5, 1);
     homingElecS = AnimatedSprite(&homingElecTex, 2, 0, 13.0f, 7, 1);
-    boulderS = AnimatedSprite(&homingElecTex, 5, 0, 13.0f, 7, 1);
+    boulderS = AnimatedSprite(&boulderTex, 5, 0, 13.0f, 7, 1);
     player.sprite = iridiumS;
     sequencer.start();
 }
@@ -46,6 +46,8 @@ void Game::update(float deltaTime) {
     sequencer.update(deltaTime);
 
     if (IsKeyPressed(KEY_P)) isFreezed = !isFreezed;
+
+    if (IsKeyPressed(KEY_R)) sequencer.reStart();
 
     if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
         bulletRandomWave(&player);
@@ -89,7 +91,7 @@ Entity * Game::convertTypeToBullet(std::string type) {
     Entity *newObject = nullptr;
     if (type == "ARROW") newObject = new Arrow(redArrowS, 750);
     else if (type == "HOMING") newObject = new Homing(homingElecS, &player);
-    else if (type == "BOULDER") newObject = new Arrow(redArrowS, 750);
+    else if (type == "BOULDER") newObject = new Arrow(boulderS, 200);
     else { std::cout << "ERROR: Wrong bullet type read : " << type << std::endl; }
     return newObject;
 }
@@ -116,7 +118,6 @@ void Game::spawnBullet(Entity *bullet) {
 }
 
 void Game::spawnBullets(std::string type, unsigned int amount) {
-    std::cout << "Trying to spawn " << type << " x " << amount << std::endl;
     for (unsigned int i = 0; i < amount; i++) {
         Entity *newBullet = convertTypeToBullet(type);
         spawnBullet(newBullet);
