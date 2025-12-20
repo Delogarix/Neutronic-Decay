@@ -35,9 +35,11 @@ void Sequencer::start() {
 void Sequencer::update(float deltaTime) {
 
     if (!this->events.empty() && this->getTimeElapsed() > this->events.front().timeCode) {
-        std::cout << this->events.front().type << " * " << this->events.front().amount << std::endl;
-        // game->spawnBullets(std::string type, unsigned int amount);
-        if (owner != nullptr) owner->bulletRandomWave(&owner->player);
+        std::string type = this->events.front().type;
+        unsigned int amount = this->events.front().amount;
+        //std::cout << type << " * " << amount << std::endl;
+
+        if (owner != nullptr) owner->spawnBullets(type, amount);
         this->events.pop();
     }
 

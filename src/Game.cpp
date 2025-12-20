@@ -85,6 +85,44 @@ void Game::bulletRandomWave(Entity *target) {
     objects[i]->spawn(spawnPoint, targetDirection);
 }
 
+Entity * Game::convertTypeToBullet(std::string type) {
+    Entity *newObject = nullptr;
+    if (type == "ARROW") newObject = new Arrow(redArrowS, 750);
+    else if (type == "HOMING") newObject = new Homing(homingElecS, &player);
+    else if (type == "BOULDER") newObject = new Arrow(redArrowS, 750);
+    else { std::cout << "ERROR: Wrong bullet type read : " << type << std::endl; }
+    return newObject;
+}
+
+void Game::spawnBullet(Entity *bullet) {
+    raylib::Vector2 spawnPoint;
+    int side = GetRandomValue(0, 3); // LEFT - UP - RIGHT - DOWN
+    if (side == 0) spawnPoint = raylib::Vector2(0, GetRandomValue(0, GetScreenHeight()));
+    if (side == 1) spawnPoint = raylib::Vector2(GetRandomValue(0, GetScreenWidth()), 0);
+    if (side == 2) spawnPoint = raylib::Vector2(GetScreenWidth(), GetRandomValue(0, GetScreenHeight()));
+    if (side == 3) spawnPoint = raylib::Vector2(GetRandomValue(0, GetScreenWidth()), GetScreenHeight());
+    raylib::Vector2 targetDirection = player.position - spawnPoint;
+    targetDirection = offsetVectorAngle(targetDirection, 15);
+    if (bullet != nullptr) {
+        unsigned int i = getFreeIndex();
+        if (i != -1) {
+            bullet->spawn(spawnPoint, targetDirection);
+            objects[i] = bullet;
+        }
+
+    }
+    else std::cout << "WARNING: Trying to spawn a nullptr bullet" << std::endl;
+
+}
+
+void Game::spawnBullets(std::string type, unsigned int amount) {
+    std::cout << "Trying to spawn " << type << " x " << amount << std::endl;
+    for (unsigned int i = 0; i < amount; i++) {
+        Entity *newBullet = convertTypeToBullet(type);
+        spawnBullet(newBullet);
+    }
+}
+
 raylib::Vector2 Game::getRandomVector() {
     raylib::Vector2 vec = UP;
     float angle = GetRandomValue(0, 360);

@@ -20,7 +20,7 @@ class Game {
     AnimatedSprite iridiumS, redArrowS, homingElecS, boulderS;
 
     std::array<Entity *, MAXOBJECTS> objects;
-
+    Player player;
 
     Sequencer sequencer;
 
@@ -30,7 +30,7 @@ class Game {
 
 
     public:
-    Player player;
+
     Game();
 
     void init(); // Texture management
@@ -40,6 +40,13 @@ class Game {
     void draw();
 
     void bulletRandomWave(Entity *target);
+
+
+    // ------------------ //
+
+    Entity* convertTypeToBullet(std::string type);
+    void spawnBullet(Entity* bullet);
+    void spawnBullets(std::string type, unsigned int amount);
 
     static raylib::Vector2 getRandomVector();
     static raylib::Vector2 offsetVectorAngle(const raylib::Vector2 &sourceVec, float angle); // offset a vector direction within a max angle in degree
