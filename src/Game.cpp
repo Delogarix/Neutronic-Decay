@@ -20,7 +20,7 @@ void Game::resolveCollision(Entity *player, Entity *&bullet) {
     }
 }
 
-Game::Game() : boxLength(800), isFreezed(true) , sequencer("wave/wave1.txt", this){
+Game::Game() : boxLength(800), isFreezed(false) , sequencer("wave/wave1.txt", this){
     for (unsigned int i = 0; i < MAXOBJECTS; i++) {
         this->objects[i] = nullptr;
     }
@@ -81,6 +81,19 @@ void Game::bulletRandomWave(Entity *target) {
     int i = getFreeIndex();
     if (bulletType != 0) objects[i] = new Arrow(redArrowS, 900);
     else objects[i] = new Homing(homingElecS, target);
-
+    targetDirection = offsetVectorAngle(targetDirection, 15);
     objects[i]->spawn(spawnPoint, targetDirection);
+}
+
+raylib::Vector2 Game::getRandomVector() {
+    raylib::Vector2 vec = UP;
+    float angle = GetRandomValue(0, 360);
+    vec = vec.Rotate(angle * DEG2RAD);
+    return vec;
+}
+
+raylib::Vector2 Game::offsetVectorAngle(const raylib::Vector2 &sourceVec, float angle) {
+    float randomAngle = GetRandomValue(-angle, angle) * DEG2RAD;
+    raylib::Vector2 newVector = sourceVec.Rotate(randomAngle);
+    return newVector;
 }

@@ -33,12 +33,15 @@ class Game {
     Player player;
     Game();
 
-    void init(); // Texture managnment
+    void init(); // Texture management
 
     void update(float deltaTime);
 
     void draw();
 
     void bulletRandomWave(Entity *target);
+
+    static raylib::Vector2 getRandomVector();
+    static raylib::Vector2 offsetVectorAngle(const raylib::Vector2 &sourceVec, float angle); // offset a vector direction within a max angle in degree
 
 };
