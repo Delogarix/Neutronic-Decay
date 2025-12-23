@@ -22,6 +22,7 @@ void Sequencer::readFile(std::string fileName) {
             stream >> inputEvent.timeCode;
             stream >> inputEvent.type;
             stream >> inputEvent.amount;
+            stream >> inputEvent.side;
             this->events.push(inputEvent);
         }
     }
@@ -45,9 +46,8 @@ void Sequencer::update(float deltaTime) {
     passedTime += deltaTime;
     if (!this->events.empty() && this->getTimeElapsed() > this->events.front().timeCode) {
         std::string type = this->events.front().type;
-        unsigned int amount = this->events.front().amount;
 
-        if (owner != nullptr) owner->spawnBullets(type, amount);
+        if (owner != nullptr) owner->spawnBullets(events.front());
         this->events.pop();
     }
 

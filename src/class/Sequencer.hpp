@@ -10,6 +10,7 @@ struct Event {
     float timeCode;
     std::string type;
     unsigned int amount;
+    std::string side;
 };
 
 class Sequencer {

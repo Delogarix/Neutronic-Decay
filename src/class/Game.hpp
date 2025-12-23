@@ -47,8 +47,11 @@ class Game {
     // ------------------ //
 
     Entity* convertTypeToBullet(std::string type);
-    void spawnBullet(Entity* bullet);
-    void spawnBullets(std::string type, unsigned int amount);
+    raylib::Vector2 convertSideToVector(std::string side);
+    std::string getRandomSide();
+    void spawnBullet(Entity* bullet, Event event);
+    void spawnBulletFromEvent(Event event);
+    void spawnBullets(Event event);
 
     static raylib::Vector2 getRandomVector();
     static raylib::Vector2 offsetVectorAngle(const raylib::Vector2 &sourceVec, float angle); // offset a vector direction within a max angle in degree

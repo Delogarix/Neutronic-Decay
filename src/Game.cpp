@@ -127,13 +127,27 @@ Entity * Game::convertTypeToBullet(std::string type) {
     return newObject;
 }
 
-void Game::spawnBullet(Entity *bullet) {
-    raylib::Vector2 spawnPoint;
-    int side = GetRandomValue(0, 3); // LEFT - UP - RIGHT - DOWN
-    if (side == 0) spawnPoint = raylib::Vector2(0, GetRandomValue(0, GetScreenHeight()));
-    if (side == 1) spawnPoint = raylib::Vector2(GetRandomValue(0, GetScreenWidth()), 0);
-    if (side == 2) spawnPoint = raylib::Vector2(GetScreenWidth(), GetRandomValue(0, GetScreenHeight()));
-    if (side == 3) spawnPoint = raylib::Vector2(GetRandomValue(0, GetScreenWidth()), GetScreenHeight());
+raylib::Vector2 Game::convertSideToVector(std::string side) {
+    raylib::Vector2 vec = ZERO;
+    if (side == "LEFT") vec = raylib::Vector2(0, GetRandomValue(0, GetScreenHeight()));
+    else if (side == "TOP") vec = raylib::Vector2(GetRandomValue(0, GetScreenWidth()), 0);
+    else if (side == "RIGHT") vec = raylib::Vector2(GetScreenWidth(), GetRandomValue(0, GetScreenHeight()));
+    else if (side == "BOTTOM") vec = raylib::Vector2(GetRandomValue(0, GetScreenWidth()), GetScreenHeight());
+    else vec = raylib::Vector2(GetRandomValue(0, GetScreenWidth()), 0);
+    return vec;
+}
+
+std::string Game::getRandomSide() {
+    int side = GetRandomValue(0, 3); // LEFT - TOP - RIGHT - BOTTOM
+    if (side == 0) return "LEFT";
+    if (side == 1) return "TOP";
+    if (side == 2) return "RIGHT";
+    if (side == 3) return "BOTTOM";
+    return "TOP";
+}
+
+void Game::spawnBullet(Entity *bullet, Event event) {
+    raylib::Vector2 spawnPoint = convertSideToVector(event.side);
     raylib::Vector2 targetDirection = player.getPosition() - spawnPoint;
     targetDirection = offsetVectorAngle(targetDirection, 15);
     if (bullet != nullptr) {
@@ -148,10 +162,14 @@ void Game::spawnBullet(Entity *bullet) {
 
 }
 
-void Game::spawnBullets(std::string type, unsigned int amount) {
-    for (unsigned int i = 0; i < amount; i++) {
-        Entity *newBullet = convertTypeToBullet(type);
-        spawnBullet(newBullet);
+void Game::spawnBulletFromEvent(Event event) {
+
+}
+
+void Game::spawnBullets(Event event) {
+    for (unsigned int i = 0; i < event.amount; i++) {
+        Entity *newBullet = convertTypeToBullet(event.type);
+        spawnBullet(newBullet, event);
     }
 }
 
