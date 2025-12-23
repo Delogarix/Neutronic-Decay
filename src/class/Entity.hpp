@@ -11,11 +11,14 @@ class Entity {
     float radius, maxSpeed;
     Timer lifeTime;
 
+    void collideWithBorder(float border, raylib::Vector2 offset);
+
     public:
 
     AnimatedSprite sprite;
 
     Entity();
+    virtual ~Entity();
 
     raylib::Vector2 getPosition() const;
     bool lifeTimeExceeded() const;

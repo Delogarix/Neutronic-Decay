@@ -1,5 +1,8 @@
 
 #include "class/Player.hpp"
+
+#include <iostream>
+
 #include "raylib-cpp.hpp"
 
 void Player::onReceivingHit() {
@@ -10,12 +13,12 @@ void Player::onGivingHit() {
 
 }
 
-Player::Player() : isMoving(false), health(11), accelerationScale(500)  {
+Player::Player() : isMoving(false), health(11), worldLimit(GetScreenHeight()), accelerationScale(500)  {
     this->radius = 14;
     this->position = raylib::Vector2(GetScreenWidth()/2, GetScreenHeight()/2);
 }
 
-Player::Player(const AnimatedSprite &sprite) : isMoving(false), health(11), accelerationScale(500) {
+Player::Player(const AnimatedSprite &sprite, int worldLimit) : isMoving(false), health(11), worldLimit(worldLimit),accelerationScale(500) {
     this->sprite = sprite;
     this->radius = 14;
     this->position = raylib::Vector2(GetScreenWidth()/2, GetScreenHeight()/2);
@@ -47,5 +50,7 @@ void Player::spawn(raylib::Vector2 position, raylib::Vector2 direction) {
 
 void Player::update(float deltaTime) {
     handleInputs(deltaTime);
+    collideWithBorder(worldLimit, raylib::Vector2(GetScreenWidth()/2, GetScreenHeight()/2));
     Entity::update(deltaTime);
+    //std::cout << position.x - GetScreenWidth()/2 << " : " << position.y - GetScreenHeight()/2 << std::endl;
 }

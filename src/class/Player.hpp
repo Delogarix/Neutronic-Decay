@@ -5,13 +5,13 @@ class Player : public Entity {
 
 
     bool isMoving;
-    int health;
+    int health, worldLimit;
     float accelerationScale;
 
     public:
 
     Player();
-    Player(const AnimatedSprite &sprite);
+    Player(const AnimatedSprite &sprite, int worldLimit);
 
     void onReceivingHit() override;
 

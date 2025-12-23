@@ -1,6 +1,8 @@
 
 #include "class/Entity.hpp"
 
+#include <iostream>
+
 void Entity::onReceivingHit() {
 
 }
@@ -9,9 +11,18 @@ void Entity::onGivingHit() {
 
 }
 
+void Entity::collideWithBorder(float border, raylib::Vector2 offset) {
+    if (position.x > border + offset.x) position.x = border + offset.x;
+    if (position.x < -border + offset.x) position.x = - border + offset.x;
+    if (position.y > border + offset.y)  position.y = border + offset.y;
+    if (position.y < -border + offset.y) position.y = - border + offset.y;
+}
+
 Entity::Entity() : position(100, 100), speed(0, 0), acceleration(0,0), radius(20), maxSpeed(100), lifeTime(Timer(0, false)), sprite(AnimatedSprite()) {
 
 }
+
+Entity::~Entity() = default;
 
 raylib::Vector2 Entity::getPosition() const { return this->position; }
 

@@ -39,13 +39,14 @@ void Game::displayGameInfo() {
 void Game::reStart() {
     flushObjects();
     sequencer.reStart();
-    player = Player(iridiumS);
+    player = Player(iridiumS, boxLength/2);
 }
 
-Game::Game() : boxLength(800), isFreezed(false) , sequencer("wave/wave1.txt", this){
+Game::Game() : boxLength(GetScreenHeight() - 64), isFreezed(false) , sequencer("wave/wave1.txt", this) {
     for (unsigned int i = 0; i < MAXOBJECTS; i++) {
         this->objects[i] = nullptr;
     }
+    player = Player(iridiumS, boxLength/2);
     objects[0] = &player; // The first object is the player ptr
 }
 
@@ -101,23 +102,6 @@ void Game::draw() {
     displayGameInfo();
 }
 
-void Game::bulletRandomWave(Entity *target) {
-    raylib::Vector2 spawnPoint, targetDirection;
-    int side = GetRandomValue(0, 3); // LEFT - UP - RIGHT - DOWN
-    int bulletType = GetRandomValue(0, 2);
-    if (side == 0) spawnPoint = raylib::Vector2(0, GetRandomValue(0, GetScreenHeight()));
-    if (side == 1) spawnPoint = raylib::Vector2(GetRandomValue(0, GetScreenWidth()), 0);
-    if (side == 2) spawnPoint = raylib::Vector2(GetScreenWidth(), GetRandomValue(0, GetScreenHeight()));
-    if (side == 3) spawnPoint = raylib::Vector2(GetRandomValue(0, GetScreenWidth()), GetScreenHeight());
-    targetDirection = target->getPosition() - spawnPoint;
-
-    int i = getFreeIndex();
-    if (bulletType != 0) objects[i] = new Arrow(redArrowS, 900);
-    else objects[i] = new Homing(homingElecS, target);
-    targetDirection = offsetVectorAngle(targetDirection, 15);
-    objects[i]->spawn(spawnPoint, targetDirection);
-}
-
 Entity * Game::convertTypeToBullet(std::string type) {
     Entity *newObject = nullptr;
     if (type == "ARROW") newObject = new Arrow(redArrowS, 600);
@@ -129,12 +113,12 @@ Entity * Game::convertTypeToBullet(std::string type) {
 
 raylib::Vector2 Game::convertSideToVector(std::string side) {
     raylib::Vector2 vec = ZERO;
-    if (side == "LEFT") vec = raylib::Vector2(0, GetRandomValue(0, GetScreenHeight()));
-    else if (side == "TOP") vec = raylib::Vector2(GetRandomValue(0, GetScreenWidth()), 0);
-    else if (side == "RIGHT") vec = raylib::Vector2(GetScreenWidth(), GetRandomValue(0, GetScreenHeight()));
-    else if (side == "BOTTOM") vec = raylib::Vector2(GetRandomValue(0, GetScreenWidth()), GetScreenHeight());
-    else vec = raylib::Vector2(GetRandomValue(0, GetScreenWidth()), 0);
-    return vec;
+    if (side == "LEFT") vec = raylib::Vector2(0, GetRandomValue(0, boxLength));
+    else if (side == "TOP") vec = raylib::Vector2(GetRandomValue(0, boxLength), 0);
+    else if (side == "RIGHT") vec = raylib::Vector2(boxLength, GetRandomValue(0, boxLength));
+    else if (side == "BOTTOM") vec = raylib::Vector2(GetRandomValue(0, boxLength), boxLength);
+    else vec = raylib::Vector2(GetRandomValue(0, boxLength), 0);
+    return vec + raylib::Vector2(GetScreenWidth()/2, GetScreenHeight()/2);
 }
 
 std::string Game::getRandomSide() {
@@ -159,10 +143,6 @@ void Game::spawnBullet(Entity *bullet, Event event) {
 
     }
     else std::cout << "WARNING: Trying to spawn a nullptr bullet" << std::endl;
-
-}
-
-void Game::spawnBulletFromEvent(Event event) {
 
 }
 

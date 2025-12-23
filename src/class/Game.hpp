@@ -41,8 +41,6 @@ class Game {
 
     void draw();
 
-    void bulletRandomWave(Entity *target);
-
 
     // ------------------ //
 
@@ -50,7 +48,6 @@ class Game {
     raylib::Vector2 convertSideToVector(std::string side);
     std::string getRandomSide();
     void spawnBullet(Entity* bullet, Event event);
-    void spawnBulletFromEvent(Event event);
     void spawnBullets(Event event);
 
     static raylib::Vector2 getRandomVector();
