@@ -9,7 +9,10 @@ Sequencer::Sequencer() : fileName("wave/wave1.txt"), startTime(GetTime()), passe
 
 Sequencer::Sequencer(std::string fileName, Game *owner) : fileName(fileName), startTime(GetTime()), passedTime(0), hasStarted(false), owner(owner) {
     this->readFile(fileName);
+
 }
+
+bool Sequencer::levelDone() { return getTimeElapsed() >= timeToWin; }
 
 void Sequencer::readFile(std::string fileName) {
     std::ifstream stream(fileName);
@@ -26,6 +29,7 @@ void Sequencer::readFile(std::string fileName) {
             this->events.push(inputEvent);
         }
     }
+    this->timeToWin = this->events.back().timeCode + 10.0f;
 }
 
 void Sequencer::start() {

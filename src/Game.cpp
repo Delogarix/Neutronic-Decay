@@ -93,7 +93,12 @@ void Game::update(float deltaTime) {
 
     if (!isFreezed) {
         if (player.isDead()) reStart();
-        sequencer.update(deltaTime);
+        if (!sequencer.levelDone()) {
+            sequencer.update(deltaTime);
+        } else {
+            //std::cout << "GG !!!!!" << std::endl;
+        }
+
         for (unsigned int i = 0; i < MAXOBJECTS; i++) {
             if (objects[i] != nullptr) {
                 objects[i]->update(deltaTime);

@@ -17,7 +17,7 @@ class Sequencer {
 
     std::queue<Event> events;
     std::string fileName;
-    float startTime, passedTime;
+    float startTime, passedTime, timeToWin;
     bool hasStarted;
     Game *owner;
 
@@ -28,6 +28,7 @@ class Sequencer {
     Sequencer();
     Sequencer(std::string fileName, Game *owner);
 
+    bool levelDone();
     float getTimeElapsed();
 
     void readFile(std::string fileName);
