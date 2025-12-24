@@ -10,8 +10,8 @@
 
 void UpdateDrawFrame();
 
-int screenWidth = 1000;
-int screenHeight = 1000;
+int screenWidth = 950;
+int screenHeight = 950;
 
 raylib::Window window(screenWidth, screenHeight, "Project: Neutronic Decay");
 
@@ -49,7 +49,7 @@ void UpdateDrawFrame() {
 
     game.draw();
 
-    DrawFPS(30, 30);
+    DrawFPS(10, 10);
 
     EndDrawing();
 }

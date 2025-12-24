@@ -14,6 +14,7 @@ const unsigned int MAXOBJECTS = 50000;
 class Game {
 
     int boxLength;
+    raylib::Vector2 leftCorner, rightCorner, topRight, bottomLeft;
     bool isFreezed;
 
     raylib::Texture2D iridiumTex, homingElecTex, redArrowTex, boulderTex;
@@ -29,6 +30,7 @@ class Game {
     void flushObjects();
     void resolveCollision(Entity* player, Entity *&bullet);
     void displayGameInfo();
+    void drawFrame();
     void reStart();
 
     public:

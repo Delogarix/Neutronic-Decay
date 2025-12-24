@@ -32,8 +32,20 @@ void Game::resolveCollision(Entity *player, Entity *&bullet) {
 }
 
 void Game::displayGameInfo() {
-    DrawText(TextFormat("%f", sequencer.getTimeElapsed()), GetScreenWidth()/2 - 60, 20, 30, BLACK);
+    DrawText(TextFormat("%f", sequencer.getTimeElapsed()), GetScreenWidth()/2 - 60, 8, 30, WHITE);
     DrawText(TextFormat("%i", player.getHeath()), GetScreenWidth()/2 - 11, 60, 20, VIOLET);
+}
+
+void Game::drawFrame() {
+    constexpr float thickness = 65;
+    DrawLineEx(topRight, rightCorner, thickness, BLACK);
+    DrawLineEx(bottomLeft, rightCorner, thickness, BLACK);
+    DrawLineEx(topRight, leftCorner, thickness, BLACK);
+    DrawLineEx(leftCorner, bottomLeft, thickness, BLACK);
+    DrawCircleV(leftCorner, 10, BLACK);
+    DrawCircleV(rightCorner, 10, BLACK);
+    DrawCircleV(topRight, 10, BLACK);
+    DrawCircleV(bottomLeft, 10, BLACK);
 }
 
 void Game::reStart() {
@@ -42,7 +54,10 @@ void Game::reStart() {
     player = Player(iridiumS, boxLength/2);
 }
 
-Game::Game() : boxLength(GetScreenHeight() - 64), isFreezed(false) , sequencer("wave/wave1.txt", this) {
+Game::Game() : boxLength(GetScreenHeight() - 15), leftCorner(raylib::Vector2(((GetScreenHeight() - boxLength)/2), ((GetScreenHeight() - boxLength)/2))),
+rightCorner(raylib::Vector2(GetScreenHeight() - (GetScreenHeight() - boxLength)/2, GetScreenHeight() - (GetScreenHeight() - boxLength)/2)),
+topRight(raylib::Vector2(rightCorner.x, leftCorner.x)), bottomLeft(raylib::Vector2(leftCorner.x, rightCorner.y)),
+isFreezed(false), sequencer("wave/wave1.txt", this) {
     for (unsigned int i = 0; i < MAXOBJECTS; i++) {
         this->objects[i] = nullptr;
     }
@@ -99,7 +114,9 @@ void Game::draw() {
             //objects[i]->drawHitbox();
         }
     }
+    drawFrame();
     displayGameInfo();
+
 }
 
 Entity * Game::convertTypeToBullet(std::string type) {
@@ -113,12 +130,12 @@ Entity * Game::convertTypeToBullet(std::string type) {
 
 raylib::Vector2 Game::convertSideToVector(std::string side) {
     raylib::Vector2 vec = ZERO;
-    if (side == "LEFT") vec = raylib::Vector2(0, GetRandomValue(0, boxLength));
-    else if (side == "TOP") vec = raylib::Vector2(GetRandomValue(0, boxLength), 0);
-    else if (side == "RIGHT") vec = raylib::Vector2(boxLength, GetRandomValue(0, boxLength));
-    else if (side == "BOTTOM") vec = raylib::Vector2(GetRandomValue(0, boxLength), boxLength);
-    else vec = raylib::Vector2(GetRandomValue(0, boxLength), 0);
-    return vec + raylib::Vector2(GetScreenWidth()/2, GetScreenHeight()/2);
+    if      (side == "LEFT")   vec = raylib::Vector2(leftCorner.x, GetRandomValue(leftCorner.y, bottomLeft.y));
+    else if (side == "TOP")    vec = raylib::Vector2(GetRandomValue(leftCorner.x, topRight.x), leftCorner.y);
+    else if (side == "RIGHT")  vec = raylib::Vector2(topRight.x, GetRandomValue(topRight.y, rightCorner.y));
+    else if (side == "BOTTOM") vec = raylib::Vector2(GetRandomValue(bottomLeft.x, rightCorner.x), rightCorner.y);
+    else vec = raylib::Vector2(GetRandomValue(leftCorner.x, topRight.x), leftCorner.y);
+    return vec;
 }
 
 std::string Game::getRandomSide() {
@@ -140,7 +157,6 @@ void Game::spawnBullet(Entity *bullet, Event event) {
             bullet->spawn(spawnPoint, targetDirection);
             objects[i] = bullet;
         }
-
     }
     else std::cout << "WARNING: Trying to spawn a nullptr bullet" << std::endl;
 
