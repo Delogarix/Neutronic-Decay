@@ -20,7 +20,7 @@ END;
         else {
 
             try {
-                $db_server = new PDO('mysql:host=localhost;dbname=testdb;charset=utf8','root',$db_passwd,[PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
+                $db_server = new PDO('mysql:host=localhost;dbname=gamedb;charset=utf8','root',$db_passwd,[PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
                 $dbQuery = 'INSERT INTO JOUEUR VALUES (:user, :passwd)';
                 $dbInsert = $db_server->prepare($dbQuery);
                 $dbInsert->execute(["user" => $user, "passwd" => $passwd]);

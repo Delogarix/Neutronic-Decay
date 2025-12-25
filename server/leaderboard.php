@@ -5,7 +5,7 @@ include_once(__DIR__ . "/structure/script_data.php");
 
 if (isset($_POST['temps'], $_SESSION['logged'])) {
     try {
-        $db_server = new PDO('mysql:host=localhost;dbname=testdb;charset=utf8','root',$db_passwd,[PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
+        $db_server = new PDO('mysql:host=localhost;dbname=gamedb;charset=utf8','root',$db_passwd,[PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]);
         $win = 0;
         if ($_POST['temps'] >= $timeToFinish) $win = 1;
         $dbQuery = 'INSERT INTO SCORE (temps, hasWin, username_score) VALUES (:temps, :win, :user)';

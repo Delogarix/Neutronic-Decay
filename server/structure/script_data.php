@@ -6,7 +6,7 @@ $timeToFinish = 70;
 try {
 
     $db_server = new PDO(
-        'mysql:host=localhost;dbname=testdb;charset=utf8',
+        'mysql:host=localhost;dbname=gamedb;charset=utf8',
         'root',
         $db_passwd
     );
