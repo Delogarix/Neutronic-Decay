@@ -1,6 +1,10 @@
 
 #include "class/Game.hpp"
 
+#if defined(PLATFORM_WEB)
+    #include <emscripten/emscripten.h>
+#endif
+
 
 
 unsigned int Game::getFreeIndex() {
@@ -91,12 +95,29 @@ void Game::update(float deltaTime) {
 
     if (IsKeyPressed(KEY_R)) reStart();
 
+    if (IsKeyPressed(KEY_T)) {
+        std::cout << "NETWORK: Sending score to php : " << sequencer.getTimeElapsed() << std::endl;
+        #if defined(PLATFORM_WEB)
+            //std::cout << "PLATFORM WEB :" << std::endl;
+            float finalScore = sequencer.getTimeElapsed();
+            EM_ASM({
+            console.log('I received: ' + $0);
+            fetch("../server/api_score.php",
+            {
+                method: "POST",
+                body: JSON.stringify({score: $0})
+            }).then(function(res){ console.log(res); }).catch(function(res){ console.log(res + "Catch") })
+            }, finalScore);
+        #endif
+    }
+
     if (!isFreezed) {
         if (player.isDead()) reStart();
         if (!sequencer.levelDone()) {
             sequencer.update(deltaTime);
         } else {
             //std::cout << "GG !!!!!" << std::endl;
+
         }
 
         for (unsigned int i = 0; i < MAXOBJECTS; i++) {
