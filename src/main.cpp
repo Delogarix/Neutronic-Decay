@@ -10,8 +10,8 @@
 
 void UpdateDrawFrame();
 
-int screenWidth = 950;
-int screenHeight = 950;
+int screenWidth = 750;
+int screenHeight = 750;
 float deltaTime = 0.0f;
 float passedTime = 0.0f;
 
@@ -26,7 +26,7 @@ void init() {
 int main() {
 
     init();
-    SetTargetFPS(45);
+    SetTargetFPS(75);
     //SetWindowState(FLAG_WINDOW_RESIZABLE);
 
     #if defined(PLATFORM_WEB)
