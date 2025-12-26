@@ -85,7 +85,6 @@ void Game::init() { // Needs to be called after window is created
 
 void Game::update(float deltaTime) {
 
-
     if (IsKeyPressed(KEY_P)) isFreezed = !isFreezed;
 
     if (IsKeyPressed(KEY_R)) reStart();

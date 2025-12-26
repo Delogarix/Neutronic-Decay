@@ -21,8 +21,6 @@ class Sequencer {
     bool hasStarted;
     Game *owner;
 
-
-
     public:
 
     Sequencer();
