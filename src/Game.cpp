@@ -61,7 +61,7 @@ void Game::reStart() {
 Game::Game() : boxLength(GetScreenHeight() - 15), leftCorner(raylib::Vector2(((GetScreenHeight() - boxLength)/2), ((GetScreenHeight() - boxLength)/2))),
 rightCorner(raylib::Vector2(GetScreenHeight() - (GetScreenHeight() - boxLength)/2, GetScreenHeight() - (GetScreenHeight() - boxLength)/2)),
 topRight(raylib::Vector2(rightCorner.x, leftCorner.x)), bottomLeft(raylib::Vector2(leftCorner.x, rightCorner.y)),
-isFreezed(false), sequencer("wave/wave1.txt", this) {
+isFreezed(false), sequencer("wave/wave_60.txt", this) {
     for (unsigned int i = 0; i < MAXOBJECTS; i++) {
         this->objects[i] = nullptr;
     }
@@ -80,11 +80,6 @@ void Game::init() { // Needs to be called after window is created
     boulderS = AnimatedSprite(&boulderTex, 5, 0, 23.0f, 7, 1);
     player.sprite = iridiumS;
     sequencer.start();
-
-    std::cout << " - [Survive] 60 seconds to win" << std::endl;
-    std::cout << " - [ZQSD]    Deplacement" << std::endl;
-    std::cout << " - [R]       Recommencer" << std::endl;
-    std::cout << " - [P]       Pause" << std::endl;
 }
 
 
@@ -176,7 +171,7 @@ std::string Game::getRandomSide() {
 void Game::spawnBullet(Entity *bullet, Event event) {
     raylib::Vector2 spawnPoint = convertSideToVector(event.side);
     raylib::Vector2 targetDirection = player.getPosition() - spawnPoint;
-    targetDirection = offsetVectorAngle(targetDirection, 15);
+    targetDirection = offsetVectorAngle(targetDirection, 20);
     if (bullet != nullptr) {
         unsigned int i = getFreeIndex();
         if (i != -1) {

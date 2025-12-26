@@ -2,11 +2,11 @@
 
 Homing::Homing() : target(nullptr), attractForce(5) { }
 
-Homing::Homing(const AnimatedSprite &sprite, Entity *target) : target(target), attractForce(1500) {
+Homing::Homing(const AnimatedSprite &sprite, Entity *target) : target(target), attractForce(1100) {
     this->sprite = sprite;
     maxSpeed = 500;
     radius = 8;
-    this->lifeTime = Timer(3, 0);
+    this->lifeTime = Timer(3.5, 0);
 }
 
 void Homing::spawn(raylib::Vector2 position, raylib::Vector2 direction) {
