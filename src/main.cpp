@@ -13,7 +13,6 @@ void UpdateDrawFrame();
 int screenWidth = 750;
 int screenHeight = 750;
 float deltaTime = 0.0f;
-float passedTime = 0.0f;
 
 raylib::Window window(screenWidth, screenHeight, "Project: Neutronic Decay");
 
@@ -27,7 +26,6 @@ int main() {
 
     init();
     SetTargetFPS(75);
-    //SetWindowState(FLAG_WINDOW_RESIZABLE);
 
     #if defined(PLATFORM_WEB)
         emscripten_set_main_loop(UpdateDrawFrame, 0, 1);
@@ -43,14 +41,10 @@ int main() {
 void UpdateDrawFrame() {
     //  -   -   -  // - - - - - UPDATE PART - - - - - //
 
-    if (IsWindowFocused()) {
 
-
-        game.update(deltaTime);
-        deltaTime = GetFrameTime();
-        //if (deltaTime > 0.5f) deltaTime = 0.5f; // Hard choice but best option for now
-        std::cout << "FrameTime : " << deltaTime << std::endl;
-    }
+    game.update(deltaTime);
+    deltaTime = GetFrameTime();
+    if (deltaTime > 0.5f) deltaTime = 0.5f; // Hard choice but best option for now
 
     BeginDrawing(); // - - - - - DRAW PART - - - - - //
 

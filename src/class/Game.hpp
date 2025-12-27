@@ -15,7 +15,8 @@ class Game {
 
     int boxLength;
     raylib::Vector2 leftCorner, rightCorner, topRight, bottomLeft;
-    bool isFreezed;
+    bool isFreezed, isOnMenu, isOnTransition;
+    Timer transitionTime;
 
     raylib::Texture2D iridiumTex, homingElecTex, redArrowTex, boulderTex;
     AnimatedSprite iridiumS, redArrowS, homingElecS, boulderS;
@@ -30,8 +31,12 @@ class Game {
     void flushObjects();
     void resolveCollision(Entity* player, Entity *&bullet);
     void displayGameInfo();
+    void displayStartMenu();
     void drawFrame();
-    void reStart();
+    void reset();
+    void start();
+    void sendScore();
+    void startTransition();
 
     public:
 

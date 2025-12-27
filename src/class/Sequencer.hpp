@@ -31,6 +31,7 @@ class Sequencer {
 
     void readFile(std::string fileName);
 
+    void stop();
     void start();
     void reStart();
 

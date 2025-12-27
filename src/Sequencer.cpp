@@ -32,6 +32,10 @@ void Sequencer::readFile(std::string fileName) {
     this->timeToWin = this->events.back().timeCode + 10.0f;
 }
 
+void Sequencer::stop() {
+    this->hasStarted = false;
+}
+
 void Sequencer::start() {
     this->startTime = 0;
     this->passedTime = 0;
@@ -47,12 +51,13 @@ void Sequencer::reStart() {
 }
 
 void Sequencer::update(float deltaTime) {
-    passedTime += deltaTime;
-    if (!this->events.empty() && this->getTimeElapsed() > this->events.front().timeCode) {
-        std::string type = this->events.front().type;
+    if (hasStarted) {
+        passedTime += deltaTime;
+        if (!this->events.empty() && this->getTimeElapsed() > this->events.front().timeCode) {
+            std::string type = this->events.front().type;
 
-        if (owner != nullptr) owner->spawnBullets(events.front());
-        this->events.pop();
+            if (owner != nullptr) owner->spawnBullets(events.front());
+            this->events.pop();
+        }
     }
-
 }

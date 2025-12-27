@@ -38,6 +38,20 @@ void Game::resolveCollision(Entity *player, Entity *&bullet) {
 void Game::displayGameInfo() {
     DrawText(TextFormat("%f", sequencer.getTimeElapsed()), GetScreenWidth()/2 - 60, 8, 30, WHITE);
     DrawText(TextFormat("%i", player.getHeath()), GetScreenWidth()/2 - 11, 60, 20, VIOLET);
+    if (sequencer.levelDone()) {
+        DrawText("Level completed", GetScreenWidth()/2 - 100, GetScreenHeight()/2 - 150, 45, DARKGREEN);
+    }
+    if (player.isDead()) {
+        DrawText("You died", GetScreenWidth()/2 - 70, GetScreenHeight()/2 - 150, 45, RED);
+    }
+    if (isFreezed && !isOnTransition) {
+        displayStartMenu();
+    }
+}
+
+void Game::displayStartMenu() {
+    DrawText("Start menu", GetScreenWidth()/2 - 100, GetScreenHeight()/2 - 150, 30, DARKGRAY);
+    DrawText("Press [R] to start the game", GetScreenWidth()/2 - 130, GetScreenHeight()/2 - 120, 30, DARKGRAY);
 }
 
 void Game::drawFrame() {
@@ -52,20 +66,53 @@ void Game::drawFrame() {
     DrawCircleV(bottomLeft, 10, BLACK);
 }
 
-void Game::reStart() {
+void Game::reset() {
     flushObjects();
-    sequencer.reStart();
+    isOnTransition = false;
+    transitionTime.deactivate();
+    sequencer.stop();
+    isFreezed = true;
     player = Player(iridiumS, boxLength/2);
 }
 
-Game::Game() : boxLength(GetScreenHeight() - 15), leftCorner(raylib::Vector2(((GetScreenHeight() - boxLength)/2), ((GetScreenHeight() - boxLength)/2))),
-rightCorner(raylib::Vector2(GetScreenHeight() - (GetScreenHeight() - boxLength)/2, GetScreenHeight() - (GetScreenHeight() - boxLength)/2)),
-topRight(raylib::Vector2(rightCorner.x, leftCorner.x)), bottomLeft(raylib::Vector2(leftCorner.x, rightCorner.y)),
-isFreezed(false), sequencer("wave/wave_60.txt", this) {
+void Game::start() {
+    reset();
+    isFreezed = false;
+    sequencer.reStart();
+}
+
+void Game::sendScore() {
+    std::cout << "NETWORK: Sending score to php : " << sequencer.getTimeElapsed() << std::endl;
+    #if defined(PLATFORM_WEB)
+        float finalScore = sequencer.getTimeElapsed();
+        EM_ASM({
+        console.log('I received: ' + $0);
+        fetch("../server/api_score.php",
+        {
+            method: "POST",
+            body: JSON.stringify({score: $0})
+        }).then(function(res){ console.log(res); }).catch(function(res){ console.log(res + "Catch") })
+        }, finalScore);
+    #endif
+}
+
+void Game::startTransition() {
+    transitionTime.activate();
+    isOnTransition = true;
+}
+
+Game::Game() : boxLength(GetScreenHeight() - 15),
+               leftCorner(raylib::Vector2(((GetScreenHeight() - boxLength) / 2),
+                                          ((GetScreenHeight() - boxLength) / 2))),
+               rightCorner(raylib::Vector2(GetScreenHeight() - (GetScreenHeight() - boxLength) / 2,
+                                           GetScreenHeight() - (GetScreenHeight() - boxLength) / 2)),
+               topRight(raylib::Vector2(rightCorner.x, leftCorner.x)),
+               bottomLeft(raylib::Vector2(leftCorner.x, rightCorner.y)),
+               isFreezed(false), isOnMenu(false), isOnTransition(false), transitionTime(Timer(6, 0)), sequencer("wave/wave_60.txt", this) {
     for (unsigned int i = 0; i < MAXOBJECTS; i++) {
         this->objects[i] = nullptr;
     }
-    player = Player(iridiumS, boxLength/2);
+    player = Player(iridiumS, boxLength / 2);
     objects[0] = &player; // The first object is the player ptr
 }
 
@@ -85,35 +132,31 @@ void Game::init() { // Needs to be called after window is created
 
 void Game::update(float deltaTime) {
 
-    if (IsKeyPressed(KEY_P)) isFreezed = !isFreezed;
+    if (IsKeyPressed(KEY_R)) start();
 
-    if (IsKeyPressed(KEY_R)) reStart();
-
-    if (IsKeyPressed(KEY_T)) {
-        std::cout << "NETWORK: Sending score to php : " << sequencer.getTimeElapsed() << std::endl;
-        #if defined(PLATFORM_WEB)
-            //std::cout << "PLATFORM WEB :" << std::endl;
-            float finalScore = sequencer.getTimeElapsed();
-            EM_ASM({
-            console.log('I received: ' + $0);
-            fetch("../server/api_score.php",
-            {
-                method: "POST",
-                body: JSON.stringify({score: $0})
-            }).then(function(res){ console.log(res); }).catch(function(res){ console.log(res + "Catch") })
-            }, finalScore);
-        #endif
+    if (isOnTransition) {
+        transitionTime.update();
+        if (transitionTime.timerDone()) {
+            isFreezed = true;
+            reset();
+        }
     }
 
+    if (player.isDead() && !isOnTransition) { // Loose case
+        isFreezed = true;
+        startTransition();
+        sendScore();
+        std::cout << "Sending score, loose case" << std::endl;
+    }
+
+    if (sequencer.levelDone() && !isOnTransition) {
+        startTransition();
+        sendScore();
+        std::cout << "Sending score, Win case !!!!!" << std::endl;
+        DrawText("You win the game", GetScreenWidth()/2 - 70, GetScreenHeight()/2, 20, GOLD);
+    } else sequencer.update(deltaTime);
+
     if (!isFreezed) {
-        if (player.isDead()) reStart();
-        if (!sequencer.levelDone()) {
-            sequencer.update(deltaTime);
-        } else {
-            //std::cout << "GG !!!!!" << std::endl;
-
-        }
-
         for (unsigned int i = 0; i < MAXOBJECTS; i++) {
             if (objects[i] != nullptr) {
                 objects[i]->update(deltaTime);
@@ -136,7 +179,6 @@ void Game::draw() {
     }
     drawFrame();
     displayGameInfo();
-
 }
 
 Entity * Game::convertTypeToBullet(std::string type) {
