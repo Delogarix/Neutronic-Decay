@@ -15,6 +15,7 @@ struct Event {
 
 class Sequencer {
 
+    std::queue<Event> savedEvents;
     std::queue<Event> events;
     std::string fileName;
     float startTime, passedTime, timeToWin;
@@ -22,6 +23,7 @@ class Sequencer {
     Game *owner;
 
     void flush();
+    void reload();
 
     public:
 
@@ -34,10 +36,10 @@ class Sequencer {
 
     void readFile(std::string fileName);
     void readFileDelta(std::string fileName);
+    void append(std::string fileName);
 
     void stop();
     void start();
-    void reStart();
 
     void update(float deltaTime);
 

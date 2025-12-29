@@ -131,6 +131,9 @@ void Game::init() { // Needs to be called after window is created
     player.sprite = iridiumS;
     reset();
     sequencer.readFileDelta("wave/wave_delta.txt");
+    sequencer.append("wave/wave_delta.txt");
+    sequencer.append("wave/wave_delta.txt");
+    sequencer.append("wave/wave_delta.txt");
 }
 
 

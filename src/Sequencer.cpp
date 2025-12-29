@@ -10,6 +10,10 @@ void Sequencer::flush() {
     events.swap(empty);
 }
 
+void Sequencer::reload() {
+    this->events = this->savedEvents;
+}
+
 Sequencer::Sequencer() : fileName("wave/wave1.txt"), startTime(GetTime()), passedTime(0), hasStarted(false), owner(nullptr) { }
 
 Sequencer::Sequencer(Game *owner) : fileName("wave/wave1.txt"), startTime(GetTime()), passedTime(0), hasStarted(false), owner(owner) { }
@@ -33,10 +37,10 @@ void Sequencer::readFile(std::string fileName) {
             stream >> inputEvent.type;
             stream >> inputEvent.amount;
             stream >> inputEvent.side;
-            this->events.push(inputEvent);
+            this->savedEvents.push(inputEvent);
         }
     }
-    this->timeToWin = this->events.back().timeCode + 5.0f;
+    this->timeToWin = this->savedEvents.back().timeCode + 5.0f;
 }
 
 void Sequencer::readFileDelta(std::string fileName) {
@@ -57,9 +61,32 @@ void Sequencer::readFileDelta(std::string fileName) {
             stream >> inputEvent.side;
             timecodeCount += timeDelta;
             inputEvent.timeCode = timecodeCount;
-            this->events.push(inputEvent);
+            this->savedEvents.push(inputEvent);
         }
         this->timeToWin = timecodeCount + 5.0f;
+    }
+    std::cout << "Time to win : " << this->timeToWin <<  std::endl;
+}
+
+void Sequencer::append(std::string fileName) {
+    std::ifstream stream(fileName);
+    if (!stream.is_open()) {
+        std::cout << "ERROR: cannot open append file " << fileName << std::endl;
+    }
+    else {
+        Event inputEvent;
+        float timecodeCount = this->savedEvents.back().timeCode;
+        float timeDelta = 0.0f;
+        while (stream.good()) {
+            stream >> timeDelta;
+            stream >> inputEvent.type;
+            stream >> inputEvent.amount;
+            stream >> inputEvent.side;
+            timecodeCount += timeDelta;
+            this->timeToWin += timeDelta;
+            inputEvent.timeCode = timecodeCount;
+            this->savedEvents.push(inputEvent);
+        }
     }
     std::cout << "Time to win : " << this->timeToWin <<  std::endl;
 }
@@ -68,21 +95,14 @@ void Sequencer::stop() {
     this->hasStarted = false;
     this->startTime = 0;
     this->passedTime = 0;
-    this->readFileDelta(this->fileName);
-
+    this->reload();
 }
 
 void Sequencer::start() {
     this->startTime = 0;
     this->passedTime = 0;
     this->hasStarted = true;
-}
-
-void Sequencer::reStart() {
-    this->flush();
-    readFile(this->fileName);
-    start();
-    std::cout << "Restarting wave : " << fileName << std::endl;
+    this->reload();
 }
 
 void Sequencer::update(float deltaTime) {
