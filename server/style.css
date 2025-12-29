@@ -1,0 +1,25 @@
+.color-main {
+    background-color: rgb(82, 91, 100);
+}
+
+.purple-1 {
+    color: rgb(185, 29, 120);
+}
+
+.iridium-star {
+    -webkit-font-smoothing: antialiased;
+    -webkit-text-fill-color: #00000000;
+    background-clip: text;
+    font-size: 25px;
+    font-weight: 450;
+    background-image: url(icons/golden-background.png);
+    animation: gold-dd 24s linear infinite ;
+}
+
+
+@keyframes gold-dd {
+    0%   { background-position: 0 100%; }
+    100% { background-position: 10% 0%; }
+}
+
+
