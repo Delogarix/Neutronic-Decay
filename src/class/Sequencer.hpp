@@ -21,15 +21,19 @@ class Sequencer {
     bool hasStarted;
     Game *owner;
 
+    void flush();
+
     public:
 
     Sequencer();
+    Sequencer(Game *owner);
     Sequencer(std::string fileName, Game *owner);
 
     bool levelDone();
     float getTimeElapsed();
 
     void readFile(std::string fileName);
+    void readFileDelta(std::string fileName);
 
     void stop();
     void start();

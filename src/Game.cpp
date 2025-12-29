@@ -81,7 +81,7 @@ void Game::start() {
     reset();
     isOnMenu = false;
     isFreezed = false;
-    sequencer.reStart();
+    sequencer.start();
 }
 
 void Game::sendScore() {
@@ -111,7 +111,7 @@ Game::Game() : boxLength(GetScreenHeight() - 15),
                                            GetScreenHeight() - (GetScreenHeight() - boxLength) / 2)),
                topRight(raylib::Vector2(rightCorner.x, leftCorner.x)),
                bottomLeft(raylib::Vector2(leftCorner.x, rightCorner.y)),
-               isFreezed(false), isOnMenu(false), isOnTransition(false), transitionTime(Timer(2.5f, 0)), sequencer("wave/wave_60.txt", this) {
+               isFreezed(false), isOnMenu(false), isOnTransition(false), transitionTime(Timer(2.5f, 0)), sequencer(this) {
     for (unsigned int i = 0; i < MAXOBJECTS; i++) {
         this->objects[i] = nullptr;
     }
@@ -130,6 +130,7 @@ void Game::init() { // Needs to be called after window is created
     boulderS = AnimatedSprite(&boulderTex, 5, 0, 23.0f, 7, 1);
     player.sprite = iridiumS;
     reset();
+    sequencer.readFileDelta("wave/wave_delta.txt");
 }
 
 
