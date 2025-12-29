@@ -44,7 +44,7 @@ void Game::displayGameInfo() {
     if (player.isDead()) {
         DrawText("You died", GetScreenWidth()/2 - 70, GetScreenHeight()/2 - 150, 45, RED);
     }
-    if (isFreezed && !isOnTransition) {
+    if (isOnMenu) {
         displayStartMenu();
     }
 }
@@ -70,13 +70,16 @@ void Game::reset() {
     flushObjects();
     isOnTransition = false;
     transitionTime.deactivate();
+    transitionTime.resetSignal();
     sequencer.stop();
     isFreezed = true;
+    isOnMenu = true;
     player = Player(iridiumS, boxLength/2);
 }
 
 void Game::start() {
     reset();
+    isOnMenu = false;
     isFreezed = false;
     sequencer.reStart();
 }
@@ -108,7 +111,7 @@ Game::Game() : boxLength(GetScreenHeight() - 15),
                                            GetScreenHeight() - (GetScreenHeight() - boxLength) / 2)),
                topRight(raylib::Vector2(rightCorner.x, leftCorner.x)),
                bottomLeft(raylib::Vector2(leftCorner.x, rightCorner.y)),
-               isFreezed(false), isOnMenu(false), isOnTransition(false), transitionTime(Timer(6, 0)), sequencer("wave/wave_60.txt", this) {
+               isFreezed(false), isOnMenu(false), isOnTransition(false), transitionTime(Timer(2, 0)), sequencer("wave/wave_60.txt", this) {
     for (unsigned int i = 0; i < MAXOBJECTS; i++) {
         this->objects[i] = nullptr;
     }
@@ -126,7 +129,7 @@ void Game::init() { // Needs to be called after window is created
     homingElecS = AnimatedSprite(&homingElecTex, 2, 0, 13.0f, 7, 1);
     boulderS = AnimatedSprite(&boulderTex, 5, 0, 23.0f, 7, 1);
     player.sprite = iridiumS;
-    sequencer.start();
+    start();
 }
 
 
@@ -153,10 +156,10 @@ void Game::update(float deltaTime) {
         startTransition();
         sendScore();
         std::cout << "Sending score, Win case !!!!!" << std::endl;
-        DrawText("You win the game", GetScreenWidth()/2 - 70, GetScreenHeight()/2, 20, GOLD);
-    } else sequencer.update(deltaTime);
+    }
 
-    if (!isFreezed) {
+    if (!isOnMenu && !isFreezed) {
+        sequencer.update(deltaTime);
         for (unsigned int i = 0; i < MAXOBJECTS; i++) {
             if (objects[i] != nullptr) {
                 objects[i]->update(deltaTime);
