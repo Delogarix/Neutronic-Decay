@@ -34,7 +34,9 @@ void Sequencer::readFile(std::string fileName) {
 
 void Sequencer::stop() {
     this->hasStarted = false;
+    this->startTime = 0;
     this->passedTime = 0;
+
 }
 
 void Sequencer::start() {

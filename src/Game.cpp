@@ -111,7 +111,7 @@ Game::Game() : boxLength(GetScreenHeight() - 15),
                                            GetScreenHeight() - (GetScreenHeight() - boxLength) / 2)),
                topRight(raylib::Vector2(rightCorner.x, leftCorner.x)),
                bottomLeft(raylib::Vector2(leftCorner.x, rightCorner.y)),
-               isFreezed(false), isOnMenu(false), isOnTransition(false), transitionTime(Timer(2, 0)), sequencer("wave/wave_60.txt", this) {
+               isFreezed(false), isOnMenu(false), isOnTransition(false), transitionTime(Timer(2.5f, 0)), sequencer("wave/wave_60.txt", this) {
     for (unsigned int i = 0; i < MAXOBJECTS; i++) {
         this->objects[i] = nullptr;
     }
@@ -129,7 +129,7 @@ void Game::init() { // Needs to be called after window is created
     homingElecS = AnimatedSprite(&homingElecTex, 2, 0, 13.0f, 7, 1);
     boulderS = AnimatedSprite(&boulderTex, 5, 0, 23.0f, 7, 1);
     player.sprite = iridiumS;
-    start();
+    reset();
 }
 
 
@@ -149,13 +149,11 @@ void Game::update(float deltaTime) {
         isFreezed = true;
         startTransition();
         sendScore();
-        std::cout << "Sending score, loose case" << std::endl;
     }
 
     if (sequencer.levelDone() && !isOnTransition) {
         startTransition();
         sendScore();
-        std::cout << "Sending score, Win case !!!!!" << std::endl;
     }
 
     if (!isOnMenu && !isFreezed) {
