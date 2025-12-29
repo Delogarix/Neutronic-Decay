@@ -64,7 +64,7 @@ if (isset($_POST['temps'], $_SESSION['logged'])) {
                         <?php foreach($scoreboard as $score): ?>
                             <tr>
                                 <td><?= $score['username_score'] ?></td>
-                                <td><?= $score['temps'] ?></td>
+                                <td><?= floor($score['temps'] * 10000) / 10000 ?></td>
                                 <td>
                                     <?php if($score['hasWin'] == 1): ?>
                                         <?= "Oui"?>

@@ -19,7 +19,7 @@ session_start();
                 <form class="container" action="index.php" method="post">
                     <input type="text" name="username">
                     <label>Username</label> <br>
-                    <input type="text" name="password">
+                    <input type="password" name="password">
                     <label>Password</label> <br>
                     <button action="submit">Submit</button>
                 </form>
@@ -29,9 +29,7 @@ session_start();
                 <br>
                 <form class="container" action="inscription.php" method="post">
                     <input type="text" name="new_username">
-                    <label>Username</label> <br>
-                    <input type="text" name="new_password">
-                    <label>Password</label> <br>
+                    <label>Pseudo</label> <br>
                     <button action="submit">Inscription</button>
                 </form>
             </div>
