@@ -1,6 +1,6 @@
 <?php
 
-$db_passwd = "Uql1wM";
+$db_passwd = "SH9z2V";
 $timeToFinish = 70;
 
 try {

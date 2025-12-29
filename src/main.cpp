@@ -10,8 +10,8 @@
 
 void UpdateDrawFrame();
 
-int screenWidth = 750;
-int screenHeight = 750;
+int screenWidth = 850;
+int screenHeight = 850;
 float deltaTime = 0.0f;
 
 raylib::Window window(screenWidth, screenHeight, "Project: Neutronic Decay");
@@ -25,7 +25,7 @@ void init() {
 int main() {
 
     init();
-    SetTargetFPS(75);
+    SetTargetFPS(1200);
 
     #if defined(PLATFORM_WEB)
         emscripten_set_main_loop(UpdateDrawFrame, 0, 1);
@@ -39,17 +39,18 @@ int main() {
 }
 
 void UpdateDrawFrame() {
-    //  -   -   -  // - - - - - UPDATE PART - - - - - //
 
+    //  -   -   -  // - - - - - UPDATE PART - - - - - //
+    raylib::Color inner = raylib::Color(170, 170, 170);
+    raylib::Color outer = raylib::Color(100, 100, 100);
 
     game.update(deltaTime);
     deltaTime = GetFrameTime();
-    if (deltaTime > 0.5f) deltaTime = 0.5f; // Hard choice but best option for now
+    if (deltaTime > 0.5f) deltaTime = 0.5f;
 
     BeginDrawing(); // - - - - - DRAW PART - - - - - //
 
-    window.ClearBackground(LIGHTGRAY);
-
+    DrawCircleGradient(GetScreenWidth()/2 ,GetScreenHeight()/2, 550, inner, outer);
     game.draw();
 
     DrawFPS(10, 10);

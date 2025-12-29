@@ -6,7 +6,6 @@
 #endif
 
 
-
 unsigned int Game::getFreeIndex() {
     for (int i = 0; i < MAXOBJECTS; i++) {
         if (objects[i] == nullptr) {
@@ -37,21 +36,17 @@ void Game::resolveCollision(Entity *player, Entity *&bullet) {
 
 void Game::displayGameInfo() {
     DrawText(TextFormat("%f", sequencer.getTimeElapsed()), GetScreenWidth()/2 - 60, 8, 30, WHITE);
-    DrawText(TextFormat("%i", player.getHeath()), GetScreenWidth()/2 - 11, 60, 20, VIOLET);
+    DrawText(TextFormat("%i", player.getHeath()), GetScreenWidth()/2 - 11, 60, 20, Color{230, 0, 230, 255});
     if (sequencer.levelDone()) {
-        DrawText("Level completed", GetScreenWidth()/2 - 100, GetScreenHeight()/2 - 150, 45, DARKGREEN);
+        DrawText("Niveau complété", GetScreenWidth()/2 - 150, GetScreenHeight()/2 - 150, 40, ORANGE);
     }
     if (player.isDead()) {
-        DrawText("You died", GetScreenWidth()/2 - 70, GetScreenHeight()/2 - 150, 45, RED);
+        DrawText("Vous avez échoué", GetScreenWidth()/2 - 170, GetScreenHeight()/2 - 150, 40, RED);
     }
     if (isOnMenu) {
-        displayStartMenu();
+        DrawText("Menu", GetScreenWidth()/2 - 310, GetScreenHeight()/2 - 160, 30, BLACK);
+        DrawText("Appuyez sur [R] pour commencer la partie", GetScreenWidth()/2 - 310, GetScreenHeight()/2 - 120, 30, BLACK);
     }
-}
-
-void Game::displayStartMenu() {
-    DrawText("Start menu", GetScreenWidth()/2 - 100, GetScreenHeight()/2 - 150, 30, DARKGRAY);
-    DrawText("Press [R] to start the game", GetScreenWidth()/2 - 130, GetScreenHeight()/2 - 120, 30, DARKGRAY);
 }
 
 void Game::drawFrame() {
@@ -111,7 +106,7 @@ Game::Game() : boxLength(GetScreenHeight() - 15),
                                            GetScreenHeight() - (GetScreenHeight() - boxLength) / 2)),
                topRight(raylib::Vector2(rightCorner.x, leftCorner.x)),
                bottomLeft(raylib::Vector2(leftCorner.x, rightCorner.y)),
-               isFreezed(false), isOnMenu(false), isOnTransition(false), transitionTime(Timer(2.5f, 0)), sequencer(this) {
+               isFreezed(false), isOnMenu(true), isOnTransition(false), transitionTime(Timer(2.5f, 0)), sequencer(this) {
     for (unsigned int i = 0; i < MAXOBJECTS; i++) {
         this->objects[i] = nullptr;
     }
@@ -129,7 +124,8 @@ void Game::init() { // Needs to be called after window is created
     homingElecS = AnimatedSprite(&homingElecTex, 2, 0, 13.0f, 7, 1);
     boulderS = AnimatedSprite(&boulderTex, 5, 0, 23.0f, 7, 1);
     player.sprite = iridiumS;
-    reset();
+
+    sequencer.stop();
     sequencer.readFileDelta("wave/wave_delta.txt");
     sequencer.append("wave/wave_delta.txt");
     sequencer.append("wave/wave_delta.txt");
@@ -188,7 +184,7 @@ void Game::draw() {
 
 Entity * Game::convertTypeToBullet(std::string type) {
     Entity *newObject = nullptr;
-    if (type == "ARROW") newObject = new Arrow(redArrowS, 600);
+    if (type == "ARROW") newObject = new Arrow(redArrowS, 500);
     else if (type == "HOMING") newObject = new Homing(homingElecS, &player);
     else if (type == "BOULDER") newObject = new Arrow(boulderS, 150, 68);
     else { std::cout << "ERROR: Wrong bullet type read : " << type << std::endl; }
@@ -217,7 +213,7 @@ std::string Game::getRandomSide() {
 void Game::spawnBullet(Entity *bullet, Event event) {
     raylib::Vector2 spawnPoint = convertSideToVector(event.side);
     raylib::Vector2 targetDirection = player.getPosition() - spawnPoint;
-    targetDirection = offsetVectorAngle(targetDirection, 20);
+    targetDirection = offsetVectorAngle(targetDirection, 18);
     if (bullet != nullptr) {
         unsigned int i = getFreeIndex();
         if (i != -1) {

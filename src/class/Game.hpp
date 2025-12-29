@@ -31,7 +31,6 @@ class Game {
     void flushObjects();
     void resolveCollision(Entity* player, Entity *&bullet);
     void displayGameInfo();
-    void displayStartMenu();
     void drawFrame();
     void reset();
     void start();
@@ -47,7 +46,6 @@ class Game {
     void update(float deltaTime);
 
     void draw();
-
 
     // ------------------ //
 
