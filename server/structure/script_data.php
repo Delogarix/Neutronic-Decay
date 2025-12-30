@@ -1,6 +1,6 @@
 <?php
 
-$db_passwd = "yQFEfX";
+$db_passwd = "kO0Uor";
 $timeToFinish = 70;
 
 try {
@@ -11,10 +11,13 @@ try {
         $db_passwd
     );
 
+    /**
+     * Meiller score par personne : 'SELECT username_score, max(temps) FROM SCORE GROUP BY username_score'
+     * Meilleur avec tris par temps : 'SELECT username_score, max(temps) FROM SCORE GROUP BY username_score ORDER BY max(temps) DESC'
+     */
+
     $dbQuery = 'SELECT * FROM JOUEUR';
-    $dbQueryBoard = 'SELECT username_score, temps, hasWin FROM SCORE
-                    GROUP BY username_score
-                    ORDER BY temps DESC';
+    $dbQueryBoard = 'SELECT username_score, max(temps) as temps, hasWin FROM SCORE GROUP BY username_score ORDER BY max(temps) DESC';
     $db_data = $db_server->prepare($dbQuery);
     $db_data->execute();
     $cred2 = $db_data->fetchAll();

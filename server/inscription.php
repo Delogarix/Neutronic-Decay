@@ -2,9 +2,10 @@
 <?php
 require_once(__DIR__ . "/structure/script_data.php");
 $errorMsg = "";
+$title = "Inscription";
 
 if (isset($_POST['new_username'])) {
-    $user = $_POST['new_username'];
+    $user = strip_tags($_POST['new_username']);
     if (empty($user)) {
         echo<<<END
             <p class="text-danger container">Erreur, formulaire vide</p>
@@ -29,7 +30,7 @@ END;
             } catch (Exception $e) {
                 die('Erreur : ' . $e->getMessage());
             }
-            $errorMsg = "Le compte a bien été crée ..." . "<br>" . "Nouveau mot de passe : " . $generatedPassword . "<br>" . "Pensez à noter votre mot de passe !!!";
+            $errorMsg = "Le compte " . $user . " à bien été crée ..." . "<br>" . "Nouveau mot de passe : " . $generatedPassword . "<br>" . "Pensez à noter votre mot de passe !!!";
         }
     }
 }
@@ -38,21 +39,18 @@ END;
 
 <!DOCTYPE html>
 <html lang="fr">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-        <title>Inscription</title>
-    </head>
+
+    <?php require_once(__DIR__ . "/structure/head.php"); ?>
+
     <body class="bg-body-secondary">
         <?php require_once(__DIR__ . "/structure/header.php"); ?>
+
         <main class="container">
             <h1>Page d'inscription</h1>
             <?= $errorMsg ?>
             <br>
         </main>
-        <footer class="navbar fixed-bottom">
-            <p>copyright C starfield - 2026</p>
-        </footer>
+
+        <?php require_once(__DIR__ . "/structure/footer.php"); ?>
     </body>
 </html>

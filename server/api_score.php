@@ -19,7 +19,7 @@ try {
 
     $dbQuery = 'INSERT INTO SCORE (temps, hasWin, username_score) VALUES (:temps, :win, :user)';
     $dbInsert = $db_server->prepare($dbQuery);
-    $dbInsert->execute(["temps" => $decoded['score'], "win" => 0, "user" => $_SESSION['username']]);
+    $dbInsert->execute(["temps" => strip_tags($decoded['score']), "win" => 0, "user" => strip_tags($_SESSION['username'])]);
 
 } catch (Exception $e) {
     die('Erreur : ' . $e->getMessage());

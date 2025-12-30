@@ -1,5 +1,5 @@
 <header>
-    <nav class="navbar justify-content-center">
+    <nav class="d-flex container navbar justify-content-center border-bottom">
         <ul class="list-group list-group-horizontal row">
             <li class="list-group-item col "><a class="purple-1" href="index.php">Accueil</a></li>
 

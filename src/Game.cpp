@@ -29,6 +29,7 @@ void Game::resolveCollision(Entity *player, Entity *&bullet) {
     if (bullet != nullptr && player->isColliding(bullet) && player != bullet) {
         player->onReceivingHit();
         bullet->onGivingHit();
+        PlaySound(hitSound);
         delete bullet;
         bullet = nullptr;
     }
@@ -115,6 +116,7 @@ Game::Game() : boxLength(GetScreenHeight() - 15),
 }
 
 void Game::init() { // Needs to be called after window is created
+    InitAudioDevice();
     iridiumTex = LoadTexture("assets/iridium-core.png");
     redArrowTex = LoadTexture("assets/red-arrow.png");
     homingElecTex = LoadTexture("assets/homing-elec.png");
@@ -123,6 +125,8 @@ void Game::init() { // Needs to be called after window is created
     redArrowS = AnimatedSprite(&redArrowTex, 2, PI/4, 9.5f, 5, 1);
     homingElecS = AnimatedSprite(&homingElecTex, 2, 0, 13.0f, 7, 1);
     boulderS = AnimatedSprite(&boulderTex, 5, 0, 23.0f, 7, 1);
+    hitSound = LoadSound("assets/hit1.wav");
+    deathSound = LoadSound("assets/loose.wav");
     player.sprite = iridiumS;
 
     sequencer.stop();
@@ -137,7 +141,10 @@ void Game::init() { // Needs to be called after window is created
 
 void Game::update(float deltaTime) {
 
-    if (IsKeyPressed(KEY_R)) start();
+    if (IsKeyPressed(KEY_R)) {
+        start();
+        PlaySound(hitSound);
+    }
 
     if (isOnTransition) {
         transitionTime.update();
@@ -149,6 +156,7 @@ void Game::update(float deltaTime) {
 
     if (player.isDead() && !isOnTransition) { // Loose case
         isFreezed = true;
+        PlaySound(deathSound);
         startTransition();
         sendScore();
     }

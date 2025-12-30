@@ -1,7 +1,7 @@
 <?php
 session_start();
-
 include_once(__DIR__ . "/structure/script_data.php");
+$title = "Classement";
 
 if (isset($_POST['temps'], $_SESSION['logged'])) {
     try {
@@ -21,22 +21,18 @@ if (isset($_POST['temps'], $_SESSION['logged'])) {
 
 <!DOCTYPE html>
 <html lang="fr">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-        <link rel="stylesheet" href="style.css">
-        <title>Leaderboard</title>
-    </head>
+
+    <?php require_once(__DIR__ . "/structure/head.php"); ?>
+
     <body class="bg-secondary">
         <?php require_once(__DIR__ . "/structure/header.php"); ?>
 
-        <main class="container">
+        <main class="container-fluid">
             <div class="bg-dark-subtle center border border-danger-subtle rounded">
                 <h1 class="text-center text-danger-emphasis">LEADERBOARD</h1>
             </div>
             <br>
-            <div class="container bg-secondary rounded">
+            <div class="container-fluid bg-secondary rounded">
                 <p>zada</p>
                 <table class="table table-striped table-hover">
                     <thead>
@@ -63,8 +59,6 @@ if (isset($_POST['temps'], $_SESSION['logged'])) {
                 <br>
             </div>
         </main>
-        <footer class="navbar fixed-bottom">
-
-        </footer>
+        <?php require_once(__DIR__ . "/structure/footer.php"); ?>
     </body>
 </html>

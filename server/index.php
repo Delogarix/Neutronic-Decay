@@ -1,30 +1,31 @@
 <?php
 session_start();
 include_once(__DIR__ . "/structure/script_data.php");
+$title = "Accueil";
 
 if (isset ($_POST['username']) and isset($_POST['password'])) {
     if (isLoginValid($_POST['username'], $_POST['password'], $cred2)) {
-        $_SESSION['username'] = $_POST['username'];
+        $_SESSION['username'] = strip_tags($_POST['username']);
         $_SESSION['logged'] = true;
-        print_r($_SESSION);
     }
 }
 ?>
 
 <!DOCTYPE html>
 <html lang="fr">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-        <title>ConnectionTest</title>
-    </head>
+
+    <?php require_once(__DIR__ . "/structure/head.php"); ?>
+
     <body class=" color-main">
         <?php require_once(__DIR__ . "/structure/header.php"); ?>
 
         <main class="container">
+            <div class="container">
+                <?php if (isset($_POST['username'], $_POST['password']) && !isLoginValid($_POST['username'], $_POST['password'], $cred2)): ?>
+                    <h5 class="text-center bg-danger-subtle">Erreur, le mot de passe ou le nom d'utilisateur ne correspondent pas</h5>
+                <?php endif ?>
+            </div>
         </main>
-        <footer class="navbar fixed-bottom">
-        </footer>
+        <?php require_once(__DIR__ . "/structure/footer.php"); ?>
     </body>
 </html>
