@@ -2,9 +2,15 @@
     background-color: rgb(82, 91, 100);
 }
 
-.purple-1 {
-    color: rgb(185, 29, 120);
+.bg-nav {
+    background-color: rgb(224, 241, 247);
 }
+
+.purple-1 {
+    color: rgb(120, 19, 253);
+}
+
+.gold-1 { color: rgb(255, 167, 3);}
 
 .iridium-star {
     -webkit-font-smoothing: antialiased;

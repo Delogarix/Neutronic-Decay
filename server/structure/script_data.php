@@ -1,6 +1,6 @@
 <?php
 
-$db_passwd = "kO0Uor";
+$db_passwd = "SJCuwM";
 $timeToFinish = 70;
 
 try {
@@ -29,7 +29,8 @@ try {
 }
 
 catch (Exception $e) {
-    die('Erreur : ' . $e->getMessage());
+    //die('Erreur : ' . $e->getMessage());
+    echo "Impossible de se connecter à la base de donnée : " . $e->getMessage(); 
 }
 
 

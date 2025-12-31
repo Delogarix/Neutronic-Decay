@@ -33,7 +33,6 @@ if (isset($_POST['temps'], $_SESSION['logged'])) {
             </div>
             <br>
             <div class="container-fluid bg-secondary rounded">
-                <p>zada</p>
                 <table class="table table-striped table-hover">
                     <thead>
                         <tr>
@@ -43,17 +42,19 @@ if (isset($_POST['temps'], $_SESSION['logged'])) {
                         </tr>
                     </thead>
                     <tbody>
-                        <?php foreach($scoreboard as $score): ?>
-                            <tr>
-                                <td><?= $score['username_score'] ?></td>
-                                <td class="iridium-star"><?= floor($score['temps'] * 10000) / 10000 ?></td>
-                                <td>
-                                    <?php if($score['hasWin'] == 1): ?>
-                                        <?= "Oui"?>
-                                    <?php endif ?>
-                                </td>
-                            </tr>
-                        <?php endforeach ?>
+                        <?php if(isset($scoreboard)): ?>
+                            <?php foreach($scoreboard as $score): ?>
+                                <tr>
+                                    <td><?= $score['username_score'] ?></td>
+                                    <td class="iridium-star"><?= floor($score['temps'] * 10000) / 10000 ?></td>
+                                    <td>
+                                        <?php if($score['hasWin'] == 1): ?>
+                                            <?= "Oui"?>
+                                        <?php endif ?>
+                                    </td>
+                                </tr>
+                            <?php endforeach ?>
+                        <?php endif ?>
                     </tbody>
                 </table>
                 <br>
