@@ -8,11 +8,11 @@ $title = "Connexion";
 
     <?php require_once(__DIR__ . "/structure/head.php"); ?>
 
-    <body class="bg-secondary">
+    <body class="color-main">
 
         <?php require_once(__DIR__ . "/structure/header.php"); ?>
         <main>
-            <div class="container">
+            <div class="container p-2 bg-secondary rounded">
                 <br>
                 <form class="container" action="index.php" method="post">
                     <input type="text" name="username">

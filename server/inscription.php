@@ -42,13 +42,15 @@ END;
 
     <?php require_once(__DIR__ . "/structure/head.php"); ?>
 
-    <body class="bg-body-secondary">
+    <body class="color-main">
         <?php require_once(__DIR__ . "/structure/header.php"); ?>
 
         <main class="container">
-            <h1>Page d'inscription</h1>
-            <?= $errorMsg ?>
-            <br>
+            <div class="container bg-secondary rounded">
+                <div class="text-center"><h1>Inscription</h1></div>
+                <?= $errorMsg ?>
+                <br>
+            </div>
         </main>
 
         <?php require_once(__DIR__ . "/structure/footer.php"); ?>
