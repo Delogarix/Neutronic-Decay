@@ -30,7 +30,7 @@ END;
             } catch (Exception $e) {
                 die('Erreur : ' . $e->getMessage());
             }
-            $errorMsg = "Le compte " . $user . " à bien été crée ..." . "<br>" . "Nouveau mot de passe : " . $generatedPassword . "<br>" . "Pensez à noter votre mot de passe !!!";
+            $succes = true;
         }
     }
 }
@@ -47,9 +47,26 @@ END;
 
         <main class="container">
             <div class="container bg-secondary rounded">
-                <div class="text-center"><h1>Inscription</h1></div>
-                <?= $errorMsg ?>
-                <br>
+                <div class="container">
+                    <h3 class="text-center">Inscription</h3>
+                    <div class="container mb-2 bg-secondary-subtle border rounded">
+                        <?php if (isset($succes) && $succes === true): ?>
+                            <span class="fs-4">
+                                Le compte : <span class="purple-1"><?= $user ?></span>
+                                 à bien été crée
+                            </span> <br>
+                            <span class="fs-4">
+                                Mot de passe : <span class="purple-1"><?= $generatedPassword ?></span>
+                            </span> <br>
+                            <span class="fs-4">
+                                Noté votre mot de passe, il ne sera plus accessible dès que vous aurez quitté cette page
+                            </span>
+                        <?php else: ?>
+                            <p class="text-danger fs-4"><?= $errorMsg ?></p>
+                        <?php endif ?>
+                    </div>
+                    <br>
+                </div>
             </div>
         </main>
 

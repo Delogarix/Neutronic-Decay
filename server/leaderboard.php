@@ -27,12 +27,12 @@ if (isset($_POST['temps'], $_SESSION['logged'])) {
     <body class="bg-secondary">
         <?php require_once(__DIR__ . "/structure/header.php"); ?>
 
-        <main class="container-fluid">
-            <div class="bg-dark-subtle center border border-danger-subtle rounded">
-                <h1 class="text-center text-danger-emphasis">LEADERBOARD</h1>
+        <main class="container">
+            <div class="bg-dark-subtle center rounded">
+                <h1 class="text-center">Classement</h1>
             </div>
             <br>
-            <div class="container-fluid bg-secondary rounded">
+            <div class="container bg-secondary rounded">
                 <table class="table table-striped table-hover">
                     <thead>
                         <tr>
@@ -41,7 +41,7 @@ if (isset($_POST['temps'], $_SESSION['logged'])) {
                             <td>Niveau terminé</td>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody> 
                         <?php if(isset($scoreboard)): ?>
                             <?php foreach($scoreboard as $score): ?>
                                 <tr>

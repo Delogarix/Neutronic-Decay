@@ -12,23 +12,21 @@ $title = "Connexion";
 
         <?php require_once(__DIR__ . "/structure/header.php"); ?>
         <main>
-            <div class="container p-2 bg-secondary rounded">
-                <br>
-                <form class="container" action="index.php" method="post">
-                    <input type="text" name="username">
-                    <label>Username</label> <br>
-                    <input type="password" name="password">
-                    <label>Password</label> <br>
-                    <button action="submit">Submit</button>
-                </form>
-                <br>
-                <br>
-                <p>Si vous n'avez pas de compte vous pouvez en crée un ici</p>
-                <br>
+            <div class="container flex p-2 bg-secondary rounded">
+                <div class="container"><h3 class="text-center">Se connecter</h3></div>
+                <form class="container form" action="index.php" method="post">
+                    <label class="form-label">Nom d'utilisateur</label>
+                    <input class="form-control-sm" type="text" name="username"> <br>
+                    <label class="form-label">Mot de passe</label>
+                    <input class="form-control-sm" type="password" name="password"> <br>
+                    <button class="btn btn-outline-primary text-light" action="submit">Connexion</button>
+                </form> <br>
+
+                <div class="container"><h3 class="text-center">Crée un compte</h3></div>
                 <form class="container" action="inscription.php" method="post">
-                    <input type="text" name="new_username">
-                    <label>Pseudo</label> <br>
-                    <button action="submit">Inscription</button>
+                    <label class="form-label">Nouveau nom d'utilisateur</label>
+                    <input class="form-control-sm" type="text" name="new_username"> <br>
+                    <button class="btn btn-outline-primary text-light" action="submit">Inscription</button>
                 </form>
             </div>
         </main>
