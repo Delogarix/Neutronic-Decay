@@ -17,6 +17,7 @@ class Sequencer {
 
     std::queue<Event> savedEvents;
     std::queue<Event> events;
+    std::queue<Event> savedWarnings;
     std::queue<Event> warnings;
     std::string fileName;
     float startTime, passedTime, timeToWin;
@@ -39,6 +40,7 @@ class Sequencer {
     void readFileDelta(std::string fileName);
     void append(std::string fileName);
     void writeFile(float offset);
+    void readFileWarnings(std::string fileName);
 
     void stop();
     void start();

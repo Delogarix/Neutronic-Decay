@@ -2,7 +2,7 @@
 
 #include "../include/raylib-cpp.hpp"
 #include "class/Game.hpp"
-#include "class/Sequencer.hpp"
+#include "class/WarningBar.hpp"
 
 #if defined(PLATFORM_WEB)
     #include <emscripten/emscripten.h>
@@ -25,7 +25,7 @@ void init() {
 int main() {
 
     init();
-    SetTargetFPS(60);
+    SetTargetFPS(1200);
 
     #if defined(PLATFORM_WEB)
         emscripten_set_main_loop(UpdateDrawFrame, 0, 1);
@@ -53,7 +53,7 @@ void UpdateDrawFrame() {
     DrawCircleGradient(GetScreenWidth()/2 ,GetScreenHeight()/2, 550, inner, outer);
     game.draw();
 
-    DrawFPS(10, 10);
+    //DrawFPS(10, 10);
 
     EndDrawing();
 }

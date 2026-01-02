@@ -28,7 +28,7 @@ class Game {
     Sequencer sequencer;
     std::queue<Event> warnings;
 
-    unsigned int getFreeIndex();
+    int getFreeIndex();
 
     void flushObjects();
     void resolveCollision(Entity* player, Entity *&bullet);
@@ -38,7 +38,6 @@ class Game {
     void start();
     void sendScore();
     void startTransition();
-    void drawWarningSide(Event event);
 
     public:
 
@@ -55,11 +54,9 @@ class Game {
     Entity* convertTypeToBullet(std::string type);
     raylib::Vector2 convertSideToVector(std::string side);
     std::string getRandomSide();
-    raylib::Color colorFromType(std::string type);
-    raylib::Vector2 centerFromSide(std::string side);
-    raylib::Vector2 dimensionFromEvent(Event event);
 
     void spawnBullet(Entity* bullet, Event event);
+    void spawnWarning(Event event);
     void spawnBullets(Event event);
     void queueWarning(Event event);
 

@@ -12,6 +12,7 @@ void Sequencer::flush() {
 
 void Sequencer::reload() {
     this->events = this->savedEvents;
+    this->warnings = this->savedWarnings;
 }
 
 Sequencer::Sequencer() : fileName("wave/wave1.txt"), startTime(GetTime()), passedTime(0), hasStarted(false), owner(nullptr) { }
@@ -92,7 +93,7 @@ void Sequencer::append(std::string fileName) {
 }
 
 void Sequencer::writeFile(float offset) { // offset all the timecodes
-    std::string outputFile = "wave/output.txt";
+    std::string outputFile = "wave/warning.txt";
     std::ofstream stream;
     stream.open(outputFile);
     if (!stream) {
@@ -105,6 +106,24 @@ void Sequencer::writeFile(float offset) { // offset all the timecodes
             event.timeCode -= offset;
             stream << event.timeCode << " " << event.type << " " << event.amount << " " << event.side << "\n";
             copyEventQueue.pop();
+        }
+    }
+}
+
+void Sequencer::readFileWarnings(std::string fileName) {
+    this->fileName = fileName;
+    std::ifstream stream(fileName);
+    if (!stream.is_open()) {
+        std::cout << "ERROR: cannot open file " << fileName << std::endl;
+    }
+    else {
+        Event inputEvent;
+        while (stream.good()) {
+            stream >> inputEvent.timeCode;
+            stream >> inputEvent.type;
+            stream >> inputEvent.amount;
+            stream >> inputEvent.side;
+            this->savedWarnings.push(inputEvent);
         }
     }
 }
@@ -135,10 +154,10 @@ void Sequencer::update(float deltaTime) {
             }
             this->events.pop();
         }
-        if (!this->warnings.empty() && this->getTimeElapsed() > this->warnings.front().timeCode) {
+        while (!this->warnings.empty() && this->getTimeElapsed() > this->warnings.front().timeCode) {
             
             if (owner != nullptr) {
-                owner->spawnBullets(warnings.front());
+                owner->queueWarning(warnings.front());
             }
             this->warnings.pop();
         }

@@ -1,12 +1,14 @@
 
 #include "class/Game.hpp"
 
+#include "class/WarningBar.hpp"
+
 #if defined(PLATFORM_WEB)
     #include <emscripten/emscripten.h>
 #endif
 
 
-unsigned int Game::getFreeIndex() {
+int Game::getFreeIndex() {
     for (int i = 0; i < MAXOBJECTS; i++) {
         if (objects[i] == nullptr) {
             return i;
@@ -36,6 +38,7 @@ void Game::resolveCollision(Entity *player, Entity *&bullet) {
 }
 
 void Game::displayGameInfo() {
+    DrawRectangle(GetScreenWidth()/2 - 100, 0, 200, 40, BLACK);
     DrawText(TextFormat("%f", sequencer.getTimeElapsed()), GetScreenWidth()/2 - 60, 8, 30, WHITE);
     DrawText(TextFormat("%i", player.getHeath()), GetScreenWidth()/2 - 11, 60, 20, Color{230, 0, 230, 255});
     if (sequencer.levelDone()) {
@@ -100,15 +103,6 @@ void Game::startTransition() {
     isOnTransition = true;
 }
 
-void Game::drawWarningSide(Event event) {
-    raylib::Color color;
-    raylib::Vector2 center;
-    raylib::Vector2 dimension;
-    color = colorFromType(event.type);
-    center = centerFromSide(event.side);
-    dimension = dimensionFromEvent(event);
-    DrawRectangleRec(Game::rectangleFromCenterPoint(center, dimension.x, dimension.y), color);
-}
 
 Game::Game() : boxLength(GetScreenHeight() - 15),
                leftCorner(raylib::Vector2(((GetScreenHeight() - boxLength) / 2),
@@ -149,6 +143,7 @@ void Game::init() { // Needs to be called after window is created
     sequencer.append("wave/hard.txt");
 
     sequencer.writeFile(1);
+    sequencer.readFileWarnings("wave/warning.txt");
 }
 
 
@@ -190,12 +185,15 @@ void Game::update(float deltaTime) {
                 }
                 resolveCollision(&player, objects[i]);
             }
+            while (!warnings.empty()) {
+                spawnWarning(warnings.front());
+                warnings.pop();
+            }
         }
     }
 }
 
 void Game::draw() {
-
     for (unsigned int i = 0; i < MAXOBJECTS; i++) {
         if (objects[i] != nullptr) {
             objects[i]->draw();
@@ -203,10 +201,8 @@ void Game::draw() {
         }
     }
     drawFrame();
-    while (!warnings.empty()) {
-        drawWarningSide(warnings.front());
-        warnings.pop();
-    }
+    for (unsigned int i = 0; i < MAXOBJECTS; i++) {
+        if (objects[i] != nullptr && objects[i]->getPosition().x == -111) objects[i]->draw(); } // Draw warnings after the frame
     displayGameInfo();
 }
 
@@ -238,41 +234,12 @@ std::string Game::getRandomSide() {
     return "TOP";
 }
 
-raylib::Color Game::colorFromType(std::string type) {
-    if (type == "ARROW")   return {200, 0, 20};
-    if (type == "HOMING")  return {0, 200, 0};
-    if (type == "BOULDER") return {0, 0, 230};
-    return {200, 0, 20};
-}
-
-raylib::Vector2 Game::centerFromSide(std::string side) {
-    if (side == "LEFT")   return raylib::Vector2(20, GetScreenHeight()/2);
-    if (side == "TOP")    return raylib::Vector2(GetScreenWidth()/2, 20);
-    if (side == "RIGHT")  return raylib::Vector2(GetScreenWidth() - 20, GetScreenHeight()/2);
-    if (side == "BOTTOM") return raylib::Vector2(GetScreenWidth()/2, GetScreenHeight() - 20);
-    return raylib::Vector2(20, GetScreenHeight()/2);
-}
-
-raylib::Vector2 Game::dimensionFromEvent(Event event) {
-    raylib::Vector2 dim;
-    float length = 200;
-    if (event.type == "ARROW")  length *= 3;
-    if (event.type == "HOMING") length *= 2;
-    dim.x = 15;
-    dim.y = length;
-    if (event.side == "TOP" || event.side == "BOTTOM") {
-        dim.y = dim.x;
-        dim.x = length;
-    }
-    return dim;
-}
-
 void Game::spawnBullet(Entity *bullet, Event event) {
     raylib::Vector2 spawnPoint = convertSideToVector(event.side);
     raylib::Vector2 targetDirection = player.getPosition() - spawnPoint;
     targetDirection = offsetVectorAngle(targetDirection, 18);
     if (bullet != nullptr) {
-        unsigned int i = getFreeIndex();
+        int i = getFreeIndex();
         if (i != -1) {
             bullet->spawn(spawnPoint, targetDirection);
             objects[i] = bullet;
@@ -282,11 +249,19 @@ void Game::spawnBullet(Entity *bullet, Event event) {
 
 }
 
+void Game::spawnWarning(Event event) {
+    int i = getFreeIndex();
+    if (i != -1) {
+        WarningBar *warning = new WarningBar(event);
+        warning->spawn(ZERO, ZERO);
+        objects[i] = warning;
+    }
+}
+
 void Game::spawnBullets(Event event) {
     for (unsigned int i = 0; i < event.amount; i++) {
         Entity *newBullet = convertTypeToBullet(event.type);
         spawnBullet(newBullet, event);
-        queueWarning(event);
     }
 }
 

@@ -20,6 +20,8 @@ if(WIN32)
             src/Sequencer.cpp
             src/Game.cpp
             src/Timer.cpp
+            src/WarningBar.cpp
+            src/class/WarningBar.hpp
     )
 
     target_link_libraries(Neutronic_Decay
@@ -43,6 +45,8 @@ else()
             src/Sequencer.cpp
             src/Game.cpp
             src/Timer.cpp
+            src/WarningBar.cpp
+            src/class/WarningBar.hpp
     )
 
     target_link_libraries(Neutronic_Decay
