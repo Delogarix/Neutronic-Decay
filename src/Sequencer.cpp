@@ -130,7 +130,9 @@ void Sequencer::update(float deltaTime) {
         if (!this->events.empty() && this->getTimeElapsed() > this->events.front().timeCode) {
             std::string type = this->events.front().type;
 
-            if (owner != nullptr) owner->spawnBullets(events.front());
+            if (owner != nullptr) {
+                owner->spawnBullets(events.front());
+            }
             this->events.pop();
         }
     }

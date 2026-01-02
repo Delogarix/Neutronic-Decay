@@ -25,7 +25,7 @@ void init() {
 int main() {
 
     init();
-    SetTargetFPS(1200);
+    SetTargetFPS(60);
 
     #if defined(PLATFORM_WEB)
         emscripten_set_main_loop(UpdateDrawFrame, 0, 1);

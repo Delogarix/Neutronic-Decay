@@ -104,19 +104,10 @@ void Game::drawWarningSide(Event event) {
     raylib::Color color;
     raylib::Vector2 center;
     raylib::Vector2 dimension;
-    event.timeCode = 0;
-    event.amount = 5;
-    event.side = "RIGHT";
-    event.type = "ARROW";
-
-
-
     color = colorFromType(event.type);
     center = centerFromSide(event.side);
     dimension = dimensionFromEvent(event);
     DrawRectangleRec(Game::rectangleFromCenterPoint(center, dimension.x, dimension.y), color);
-
-
 }
 
 Game::Game() : boxLength(GetScreenHeight() - 15),
@@ -212,7 +203,10 @@ void Game::draw() {
         }
     }
     drawFrame();
-    drawWarningSide({0, "", 1, ""});
+    while (!warnings.empty()) {
+        drawWarningSide(warnings.front());
+        warnings.pop();
+    }
     displayGameInfo();
 }
 
@@ -292,7 +286,12 @@ void Game::spawnBullets(Event event) {
     for (unsigned int i = 0; i < event.amount; i++) {
         Entity *newBullet = convertTypeToBullet(event.type);
         spawnBullet(newBullet, event);
+        queueWarning(event);
     }
+}
+
+void Game::queueWarning(Event event) {
+    warnings.push(event);
 }
 
 raylib::Vector2 Game::getRandomVector() {

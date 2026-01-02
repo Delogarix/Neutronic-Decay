@@ -26,6 +26,7 @@ class Game {
     Player player;
 
     Sequencer sequencer;
+    std::queue<Event> warnings;
 
     unsigned int getFreeIndex();
 
@@ -60,9 +61,9 @@ class Game {
 
     void spawnBullet(Entity* bullet, Event event);
     void spawnBullets(Event event);
+    void queueWarning(Event event);
 
     static raylib::Vector2 getRandomVector();
     static raylib::Vector2 offsetVectorAngle(const raylib::Vector2 &sourceVec, float angle); // offset a vector direction within a max angle in degree
     static raylib::Rectangle rectangleFromCenterPoint(raylib::Vector2 center, float width, float height);
-
 };
