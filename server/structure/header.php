@@ -12,10 +12,7 @@
             </a>
             <ul class="navbar-nav justify-content-lg-center">
                 <li class="list-group-item m-3 col"><a class="purple-1 nav-link" href="index.php">Accueil</a></li>
-
-                <?php if (isset($_SESSION['logged']) && $_SESSION['logged']): ?>
-                    <li class="list-group-item m-3 col"> <a class="purple-1 nav-link" href="leaderboard.php">Classement</a></li>
-                <?php endif ?>
+                <li class="list-group-item m-3 col"> <a class="purple-1 nav-link" href="leaderboard.php">Classement</a></li>
 
                 <?php if(isset($_SESSION['logged']) && $_SESSION['logged'] ): ?>
                     <li class="list-group-item m-3 col"><a class="purple-1 nav-link" href="../build/game.html">Jeux</a></li>
