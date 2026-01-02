@@ -17,6 +17,7 @@ class Sequencer {
 
     std::queue<Event> savedEvents;
     std::queue<Event> events;
+    std::queue<Event> warnings;
     std::string fileName;
     float startTime, passedTime, timeToWin;
     bool hasStarted;

@@ -135,5 +135,12 @@ void Sequencer::update(float deltaTime) {
             }
             this->events.pop();
         }
+        if (!this->warnings.empty() && this->getTimeElapsed() > this->warnings.front().timeCode) {
+            
+            if (owner != nullptr) {
+                owner->spawnBullets(warnings.front());
+            }
+            this->warnings.pop();
+        }
     }
 }
