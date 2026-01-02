@@ -1,5 +1,7 @@
 # Neutronic Decay
 
+![ND-art](/server/icons/nd-main-frame.png "Neutronic-Decay")
+
 ## Building project
 
 First create a build folder inside the root directory
