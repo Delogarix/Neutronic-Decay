@@ -100,6 +100,25 @@ void Game::startTransition() {
     isOnTransition = true;
 }
 
+void Game::drawWarningSide(Event event) {
+    raylib::Color color;
+    raylib::Vector2 center;
+    raylib::Vector2 dimension;
+    event.timeCode = 0;
+    event.amount = 5;
+    event.side = "RIGHT";
+    event.type = "ARROW";
+
+
+
+    color = colorFromType(event.type);
+    center = centerFromSide(event.side);
+    dimension = dimensionFromEvent(event);
+    DrawRectangleRec(Game::rectangleFromCenterPoint(center, dimension.x, dimension.y), color);
+
+
+}
+
 Game::Game() : boxLength(GetScreenHeight() - 15),
                leftCorner(raylib::Vector2(((GetScreenHeight() - boxLength) / 2),
                                           ((GetScreenHeight() - boxLength) / 2))),
@@ -126,7 +145,8 @@ void Game::init() { // Needs to be called after window is created
     homingElecS = AnimatedSprite(&homingElecTex, 2, 0, 13.0f, 7, 1);
     boulderS = AnimatedSprite(&boulderTex, 5, 0, 23.0f, 7, 1);
     hitSound = LoadSound("assets/hit1.wav");
-    deathSound = LoadSound("assets/loose.wav");
+    deathSound = LoadSound("assets/lose.wav");
+    winSound = LoadSound("assets/win.wav");
     player.sprite = iridiumS;
 
     sequencer.stop();
@@ -136,6 +156,8 @@ void Game::init() { // Needs to be called after window is created
     sequencer.append("wave/intro-boulder.txt");
     sequencer.append("wave/hard.txt");
     sequencer.append("wave/hard.txt");
+
+    sequencer.writeFile(1);
 }
 
 
@@ -143,7 +165,6 @@ void Game::update(float deltaTime) {
 
     if (IsKeyPressed(KEY_R)) {
         start();
-        PlaySound(hitSound);
     }
 
     if (isOnTransition) {
@@ -162,6 +183,7 @@ void Game::update(float deltaTime) {
     }
 
     if (sequencer.levelDone() && !isOnTransition) {
+        PlaySound(winSound);
         startTransition();
         sendScore();
     }
@@ -182,6 +204,7 @@ void Game::update(float deltaTime) {
 }
 
 void Game::draw() {
+
     for (unsigned int i = 0; i < MAXOBJECTS; i++) {
         if (objects[i] != nullptr) {
             objects[i]->draw();
@@ -189,6 +212,7 @@ void Game::draw() {
         }
     }
     drawFrame();
+    drawWarningSide({0, "", 1, ""});
     displayGameInfo();
 }
 
@@ -218,6 +242,35 @@ std::string Game::getRandomSide() {
     if (side == 2) return "RIGHT";
     if (side == 3) return "BOTTOM";
     return "TOP";
+}
+
+raylib::Color Game::colorFromType(std::string type) {
+    if (type == "ARROW")   return {200, 0, 20};
+    if (type == "HOMING")  return {0, 200, 0};
+    if (type == "BOULDER") return {0, 0, 230};
+    return {200, 0, 20};
+}
+
+raylib::Vector2 Game::centerFromSide(std::string side) {
+    if (side == "LEFT")   return raylib::Vector2(20, GetScreenHeight()/2);
+    if (side == "TOP")    return raylib::Vector2(GetScreenWidth()/2, 20);
+    if (side == "RIGHT")  return raylib::Vector2(GetScreenWidth() - 20, GetScreenHeight()/2);
+    if (side == "BOTTOM") return raylib::Vector2(GetScreenWidth()/2, GetScreenHeight() - 20);
+    return raylib::Vector2(20, GetScreenHeight()/2);
+}
+
+raylib::Vector2 Game::dimensionFromEvent(Event event) {
+    raylib::Vector2 dim;
+    float length = 200;
+    if (event.type == "ARROW")  length *= 3;
+    if (event.type == "HOMING") length *= 2;
+    dim.x = 15;
+    dim.y = length;
+    if (event.side == "TOP" || event.side == "BOTTOM") {
+        dim.y = dim.x;
+        dim.x = length;
+    }
+    return dim;
 }
 
 void Game::spawnBullet(Entity *bullet, Event event) {
@@ -253,4 +306,13 @@ raylib::Vector2 Game::offsetVectorAngle(const raylib::Vector2 &sourceVec, float 
     float randomAngle = GetRandomValue(-angle, angle) * DEG2RAD;
     raylib::Vector2 newVector = sourceVec.Rotate(randomAngle);
     return newVector;
+}
+
+raylib::Rectangle Game::rectangleFromCenterPoint(raylib::Vector2 center, float width, float height) {
+    raylib::Rectangle rec;
+    rec.x = center.x - width/2;
+    rec.y = center.y - height/2;
+    rec.width = width;
+    rec.height = height;
+    return rec;
 }

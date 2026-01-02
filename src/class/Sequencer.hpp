@@ -37,6 +37,7 @@ class Sequencer {
     void readFile(std::string fileName);
     void readFileDelta(std::string fileName);
     void append(std::string fileName);
+    void writeFile(float offset);
 
     void stop();
     void start();

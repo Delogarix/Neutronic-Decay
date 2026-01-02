@@ -91,6 +91,25 @@ void Sequencer::append(std::string fileName) {
     std::cout << "Time to win : " << this->timeToWin <<  std::endl;
 }
 
+void Sequencer::writeFile(float offset) { // offset all the timecodes
+    std::string outputFile = "wave/output.txt";
+    std::ofstream stream;
+    stream.open(outputFile);
+    if (!stream) {
+        std::cout << "Erreur avec l'écriture du fichier : " << outputFile << std::endl;
+    }
+    else {
+        std::queue<Event> copyEventQueue = savedEvents;
+        while (!copyEventQueue.empty()) {
+            Event event = copyEventQueue.front();
+            event.timeCode -= offset;
+            stream << event.timeCode << " " << event.type << " " << event.amount << " " << event.side << "\n";
+            copyEventQueue.pop();
+        }
+    }
+}
+
+
 void Sequencer::stop() {
     this->hasStarted = false;
     this->startTime = 0;

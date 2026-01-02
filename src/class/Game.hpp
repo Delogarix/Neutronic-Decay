@@ -20,7 +20,7 @@ class Game {
 
     raylib::Texture2D iridiumTex, homingElecTex, redArrowTex, boulderTex;
     AnimatedSprite iridiumS, redArrowS, homingElecS, boulderS;
-    Sound hitSound, deathSound;
+    Sound hitSound, deathSound, winSound;
 
     std::array<Entity *, MAXOBJECTS> objects;
     Player player;
@@ -37,6 +37,7 @@ class Game {
     void start();
     void sendScore();
     void startTransition();
+    void drawWarningSide(Event event);
 
     public:
 
@@ -53,10 +54,15 @@ class Game {
     Entity* convertTypeToBullet(std::string type);
     raylib::Vector2 convertSideToVector(std::string side);
     std::string getRandomSide();
+    raylib::Color colorFromType(std::string type);
+    raylib::Vector2 centerFromSide(std::string side);
+    raylib::Vector2 dimensionFromEvent(Event event);
+
     void spawnBullet(Entity* bullet, Event event);
     void spawnBullets(Event event);
 
     static raylib::Vector2 getRandomVector();
     static raylib::Vector2 offsetVectorAngle(const raylib::Vector2 &sourceVec, float angle); // offset a vector direction within a max angle in degree
+    static raylib::Rectangle rectangleFromCenterPoint(raylib::Vector2 center, float width, float height);
 
 };
