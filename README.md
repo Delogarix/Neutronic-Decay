@@ -20,7 +20,7 @@ g++ *.cpp -o ../build/game.out -Wall -std=c++14 -I ../include/ -L ../lib/GNU-Lin
 ```
 To build for HTML5 :
 ```bash
-em++ -o ../build/game.html main.cpp Entity.cpp Player.cpp AnimatedSprite.cpp Arrow.cpp Homing.cpp Sequencer.cpp Game.cpp Timer.cpp -Os -Wall ../lib/Web/libraylib.a -I. -I ../include -L. -s USE_GLFW=3 --shell-file ../shell/shell_custom.html -DPLATFORM_WEB --preload-file assets --preload-file wave
+em++ -o ../build/game.html main.cpp Entity.cpp Player.cpp AnimatedSprite.cpp Arrow.cpp Homing.cpp Sequencer.cpp Game.cpp Timer.cpp WarningBar.cpp -Os -Wall ../lib/Web/libraylib.a -I. -I ../include -L. -s USE_GLFW=3 --shell-file ../shell/shell_custom.html -DPLATFORM_WEB --preload-file assets --preload-file wave
 ```
 ## Setup the database
 replace "password" with the generated password from your docker
