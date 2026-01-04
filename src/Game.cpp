@@ -121,11 +121,11 @@ Game::Game() : boxLength(GetScreenHeight() - 15),
 
 void Game::init() { // Needs to be called after window is created
     InitAudioDevice();
-    iridiumTex = LoadTexture("assets/iridium-core.png");
+    iridiumTex = LoadTexture("assets/iridium-core-purple.png");
     redArrowTex = LoadTexture("assets/red-arrow.png");
     homingElecTex = LoadTexture("assets/homing-elec.png");
     boulderTex = LoadTexture("assets/aqua-sphere.png");
-    iridiumS = AnimatedSprite(&iridiumTex, 2, 0, 3.6f, 5, 1);
+    iridiumS = AnimatedSprite(&iridiumTex, 2, 0, 50.0f, 15, 1);
     redArrowS = AnimatedSprite(&redArrowTex, 2, PI/4, 9.5f, 5, 1);
     homingElecS = AnimatedSprite(&homingElecTex, 2, 0, 13.0f, 7, 1);
     boulderS = AnimatedSprite(&boulderTex, 5, 0, 23.0f, 7, 1);
