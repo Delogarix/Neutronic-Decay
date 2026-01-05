@@ -18,7 +18,7 @@ Player::Player() : isMoving(false), health(11), worldLimit(GetScreenHeight()), a
     this->position = raylib::Vector2(GetScreenWidth()/2, GetScreenHeight()/2);
 }
 
-Player::Player(const AnimatedSprite &sprite, int worldLimit) : isMoving(false), health(50), worldLimit(worldLimit - 23),accelerationScale(500) {
+Player::Player(const AnimatedSprite &sprite, int worldLimit) : isMoving(false), health(5), worldLimit(worldLimit - 23),accelerationScale(500) {
     this->sprite = sprite;
     this->radius = 14;
     this->position = raylib::Vector2(GetScreenWidth()/2, GetScreenHeight()/2);

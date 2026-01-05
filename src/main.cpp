@@ -2,7 +2,6 @@
 
 #include "../include/raylib-cpp.hpp"
 #include "class/Game.hpp"
-#include "class/WarningBar.hpp"
 
 #if defined(PLATFORM_WEB)
     #include <emscripten/emscripten.h>
@@ -10,8 +9,8 @@
 
 void UpdateDrawFrame();
 
-int screenWidth = 730; // 850
-int screenHeight = 730;
+int screenWidth = 850; // 850
+int screenHeight = 850;
 float deltaTime = 0.0f;
 
 raylib::Window window(screenWidth, screenHeight, "Project: Neutronic Decay");
@@ -51,9 +50,9 @@ void UpdateDrawFrame() {
     BeginDrawing(); // - - - - - DRAW PART - - - - - //
 
     DrawCircleGradient(GetScreenWidth()/2 ,GetScreenHeight()/2, 550, inner, outer);
+
     game.draw();
 
-    //DrawFPS(10, 10);
 
     EndDrawing();
 }
