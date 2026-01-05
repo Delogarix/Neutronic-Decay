@@ -139,6 +139,7 @@ void Game::init() { // Needs to be called after window is created
     sequencer.append("wave/intro-homing.txt");
     sequencer.append("wave/double.txt");
     sequencer.append("wave/intro-boulder.txt");
+    sequencer.append("wave/medium.txt");
     sequencer.append("wave/hard.txt");
     sequencer.append("wave/hard.txt");
 

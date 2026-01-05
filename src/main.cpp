@@ -10,8 +10,8 @@
 
 void UpdateDrawFrame();
 
-int screenWidth = 850;
-int screenHeight = 850;
+int screenWidth = 730; // 850
+int screenHeight = 730;
 float deltaTime = 0.0f;
 
 raylib::Window window(screenWidth, screenHeight, "Project: Neutronic Decay");
