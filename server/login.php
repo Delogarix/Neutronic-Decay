@@ -25,7 +25,7 @@ $title = "Connexion";
                 <div class="container"><h3 class="text-center">Crée un compte</h3></div>
                 <form class="container" action="inscription.php" method="post">
                     <label class="form-label">Nouveau nom d'utilisateur</label>
-                    <input class="form-control-sm" type="text" name="new_username"> <br>
+                    <input class="form-control-sm" type="text" name="new_username"> <span> en minuscule </span> <br>
                     <button class="btn btn-outline-primary text-light" action="submit">Inscription</button>
                 </form>
             </div>

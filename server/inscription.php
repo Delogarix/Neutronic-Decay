@@ -6,6 +6,7 @@ $title = "Inscription";
 
 if (isset($_POST['new_username'])) {
     $user = strip_tags($_POST['new_username']);
+    $user = strtolower($user);
     if (empty($user)) {
         echo<<<END
             <p class="text-danger container">Erreur, formulaire vide</p>

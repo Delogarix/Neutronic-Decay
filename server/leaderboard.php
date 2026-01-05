@@ -24,7 +24,7 @@ if (isset($_POST['temps'], $_SESSION['logged'])) {
 
     <?php require_once(__DIR__ . "/structure/head.php"); ?>
 
-    <body class="bg-secondary">
+    <body class="color-main">
         <?php require_once(__DIR__ . "/structure/header.php"); ?>
 
         <main class="container">
@@ -32,26 +32,20 @@ if (isset($_POST['temps'], $_SESSION['logged'])) {
                 <h1 class="text-center">Classement</h1>
             </div>
             <br>
-            <div class="container bg-secondary rounded">
-                <table class="table table-striped table-hover">
-                    <thead>
+            <div class="container">
+                <table class="table table-striped table-borderless table-hover table-responsive text-center m-0 border border-black">
+                    <thead class="table-dark">
                         <tr>
-                            <td>Joueur</td>
-                            <td>Temps max</td>
-                            <td>Niveau terminé</td>
+                            <td scope="col">Joueur</td>
+                            <td scope="col">Temps</td>
                         </tr>
                     </thead>
-                    <tbody> 
+                    <tbody > 
                         <?php if(isset($scoreboard)): ?>
                             <?php foreach($scoreboard as $score): ?>
                                 <tr>
-                                    <td><?= $score['username_score'] ?></td>
-                                    <td class="iridium-star"><?= floor($score['temps'] * 10000) / 10000 ?></td>
-                                    <td>
-                                        <?php if($score['hasWin'] == 1): ?>
-                                            <?= "Oui"?>
-                                        <?php endif ?>
-                                    </td>
+                                    <td scope="col" class="bg-secondary"><p class="fw-medium text-white"><?= $score['username_score'] ?></p></td>
+                                    <td scope="col" class="iridium-star"><?= floor($score['temps'] * 10000) / 10000 ?></td>
                                 </tr>
                             <?php endforeach ?>
                         <?php endif ?>
