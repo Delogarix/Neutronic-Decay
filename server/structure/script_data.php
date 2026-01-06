@@ -1,7 +1,11 @@
 <?php
 
-$db_passwd = "iHQBP9";
-$timeToFinish = 70;
+$db_passwd = "8CbjwY";
+$timeToFinish = 250;
+$timePurple = 180;
+$timePink = 105;
+
+
 
 try {
 

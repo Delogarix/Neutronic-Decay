@@ -44,8 +44,14 @@ if (isset($_POST['temps'], $_SESSION['logged'])) {
                         <?php if(isset($scoreboard)): ?>
                             <?php foreach($scoreboard as $score): ?>
                                 <tr>
-                                    <td scope="col" class="bg-secondary"><p class="fw-medium text-white"><?= $score['username_score'] ?></p></td>
-                                    <td scope="col" class="iridium-star"><?= floor($score['temps'] * 10000) / 10000 ?></td>
+                                    <td class="bg-secondary" scope="col"><p class="fw-medium text-white"><?= $score['username_score'] ?></p></td>
+                                    <td class="bg-secondary" scope="col">
+                                        <?php     if($score['temps'] > $timeToFinish):?><p class="iridium-star fw-medium">
+                                        <?php elseif($score['temps'] > $timePurple): ?>  <p class="grade-purple fw-medium">
+                                        <?php elseif($score['temps'] > $timePink): ?>    <p class="grade-pink fw-strong">
+                                        <?php else: ?>                                   <p class="grade-silver fw-medium">
+                                        <?php endif ?>
+                                    <?= floor($score['temps'] * 10000) / 10000 ?></p></td>
                                 </tr>
                             <?php endforeach ?>
                         <?php endif ?>
