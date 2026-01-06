@@ -30,10 +30,10 @@
         </div>
     </nav>
     <br>
-    <div class="container">
+    <div class="container mb-3">
         <?php if (isset($_SESSION['logged'])): ?>
             <span>Connecté en tant que : </span>
-            <span class="purple-1"><?= "[" . $_SESSION['username'] . "]"?></span>
+            <span class="purple-2"><?= "[" . $_SESSION['username'] . "]"?></span>
         <?php else: ?>
             <p>Pas de session en cours</p>
         <?php endif ?>
