@@ -29,7 +29,9 @@ if (isset ($_POST['username']) and isset($_POST['password'])) {
             </div>
 
             <div class="p-4 container bg-secondary rounded">
-                <div class="text-center"><h1>Neutronic-Decay</h1></div>
+                <div class="text-center mt-2">
+                    <img class="pixel" src="icons/nd-main-frame.png" alt="image neutronic-decay" width="40%">
+                </div>
                 <span>
                     Bienvenue sur Neutronic-Decay <br>
                     Crée un compte, jouez au jeu et atteigner le plus haut score possible dans le classement.

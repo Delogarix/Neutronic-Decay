@@ -1,6 +1,8 @@
 # Neutronic Decay
 
-![ND-art](/server/icons/nd-main-frame.png "Neutronic-Decay")
+This project uses two main libraries :
+[Raylib](https://github.com/raysan5/raylib) 
+[Emscripten](https://github.com/emscripten-core/emscripten)
 
 ## Building project
 
