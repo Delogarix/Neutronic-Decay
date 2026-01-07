@@ -20,7 +20,7 @@ class Game {
 
     raylib::Texture2D iridiumTex, homingElecTex, redArrowTex, boulderTex;
     AnimatedSprite iridiumS, redArrowS, homingElecS, boulderS;
-    Sound hitSound, deathSound, winSound;
+    Sound hitSound, deathSound, winSound, musicSound;
 
     std::array<Entity *, MAXOBJECTS> objects;
     Player player;

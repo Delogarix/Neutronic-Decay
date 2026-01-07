@@ -32,15 +32,15 @@ unsigned int Player::getHeath() const { return this->health; }
 void Player::handleInputs(float deltaTime) {
     isMoving = false;
     #if defined(PLATFORM_WEB)
-    if (IsKeyDown(KEY_D)) { position.x +=  accelerationScale * deltaTime; isMoving = true;} // Right
-    if (IsKeyDown(KEY_Q)) { position.x += -accelerationScale * deltaTime; isMoving = true;} // Left
-    if (IsKeyDown(KEY_Z)) { position.y += -accelerationScale * deltaTime; isMoving = true;} // Up
-    if (IsKeyDown(KEY_S)) { position.y +=  accelerationScale * deltaTime; isMoving = true;} // Down
+    if (IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT)){ position.x +=  accelerationScale * deltaTime; isMoving = true;} // Right
+    if (IsKeyDown(KEY_Q) || IsKeyDown(KEY_LEFT)) { position.x += -accelerationScale * deltaTime; isMoving = true;} // Left
+    if (IsKeyDown(KEY_Z) || IsKeyDown(KEY_UP))   { position.y += -accelerationScale * deltaTime; isMoving = true;} // Up
+    if (IsKeyDown(KEY_S) || IsKeyDown(KEY_DOWN)) { position.y +=  accelerationScale * deltaTime; isMoving = true;} // Down
     #else
-    if (IsKeyDown(KEY_D)) { position.x +=  accelerationScale * deltaTime; isMoving = true;} // Right
-    if (IsKeyDown(KEY_A)) { position.x += -accelerationScale * deltaTime; isMoving = true;} // Left
-    if (IsKeyDown(KEY_W)) { position.y += -accelerationScale * deltaTime; isMoving = true;} // Up
-    if (IsKeyDown(KEY_S)) { position.y +=  accelerationScale * deltaTime; isMoving = true;} // Down
+    if (IsKeyDown(KEY_D) || IsKeyDown(KEY_RIGHT)){ position.x +=  accelerationScale * deltaTime; isMoving = true;} // Right
+    if (IsKeyDown(KEY_A) || IsKeyDown(KEY_LEFT)) { position.x += -accelerationScale * deltaTime; isMoving = true;} // Left
+    if (IsKeyDown(KEY_W) || IsKeyDown(KEY_UP))   { position.y += -accelerationScale * deltaTime; isMoving = true;} // Up
+    if (IsKeyDown(KEY_S) || IsKeyDown(KEY_DOWN)) { position.y +=  accelerationScale * deltaTime; isMoving = true;} // Down
     #endif
 }
 

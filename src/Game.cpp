@@ -81,6 +81,7 @@ void Game::start() {
     isOnMenu = false;
     isFreezed = false;
     sequencer.start();
+    PlaySound(musicSound);
 }
 
 void Game::sendScore() {
@@ -101,6 +102,7 @@ void Game::sendScore() {
 void Game::startTransition() {
     transitionTime.activate();
     isOnTransition = true;
+    StopSound(musicSound);
 }
 
 
@@ -132,6 +134,7 @@ void Game::init() { // Needs to be called after window is created
     hitSound = LoadSound("assets/hit1.wav");
     deathSound = LoadSound("assets/lose.wav");
     winSound = LoadSound("assets/win.wav");
+    musicSound = LoadSound("assets/music.mp3");
     player.sprite = iridiumS;
 
     sequencer.stop();

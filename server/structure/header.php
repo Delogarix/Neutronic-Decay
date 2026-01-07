@@ -25,6 +25,7 @@
             <div>
                 <?php if(isset($_SESSION['logged']) && $_SESSION['logged']): ?>
                     <li class="list-group-item m-3 col d-lg-flex  justify-content-lg-end"><a class="purple-1 nav-link" href="disconnect.php">Se déconnecter</a></li>
+                <!-- TODO : make a start margin even if the link is not displayed !!!! -->
                 <?php endif ?>
             </div>
         </div>
