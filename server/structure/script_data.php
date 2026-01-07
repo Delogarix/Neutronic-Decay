@@ -1,8 +1,8 @@
 <?php
 
-$db_passwd = "8CbjwY";
+$db_passwd = "QWXYbl";
 $timeToFinish = 250;
-$timePurple = 180;
+$timePurple = 175;
 $timePink = 105;
 
 

@@ -16,16 +16,20 @@
 
                 <?php if(isset($_SESSION['logged']) && $_SESSION['logged'] ): ?>
                     <li class="list-group-item m-3 col"><a class="purple-1 nav-link" href="../build/game.html">Jeux</a></li>
+                    <li class="list-group-item m-3 col"><a class="purple-1 nav-link" href="profile.php">Profile</a></li>
                 <?php endif ?>
 
                 <?php if(!isset($_SESSION['logged'])): ?>
                     <li class="list-group-item m-3 col"><a class="purple-1 nav-link" href="login.php">Connexion</a></li>
                 <?php endif ?>
+                <li class="list-group-item m-3 col"> <a class="purple-1 nav-link" target="_blank" href="https://github.com/Delogarix/Neutronic-Decay">Github</a></li>
+                
             </ul>
             <div>
                 <?php if(isset($_SESSION['logged']) && $_SESSION['logged']): ?>
-                    <li class="list-group-item m-3 col d-lg-flex  justify-content-lg-end"><a class="purple-1 nav-link" href="disconnect.php">Se déconnecter</a></li>
-                <!-- TODO : make a start margin even if the link is not displayed !!!! -->
+                    <li class="list-group-item m-1 col d-lg-flex  justify-content-lg-end"><a class="purple-1 nav-link" href="disconnect.php">Se déconnecter</a></li>
+                <?php else: ?>
+                    <li class="list-group-item m-5 col d-lg-flex  justify-content-lg-end"><a class="purple-1 nav-link" href="#"></a></li>
                 <?php endif ?>
             </div>
         </div>
