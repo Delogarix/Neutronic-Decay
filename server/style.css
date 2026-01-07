@@ -7,7 +7,9 @@
 
 .purple-2 { color: rgb(200, 158, 255); }
 
-.gold-1 { color: rgb(255, 167, 3);}
+.gold-1 { color: rgb(250, 248, 237); }
+
+.gold-2 { color: gold; }
 
 .pixel {
     image-rendering: pixelated;

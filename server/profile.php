@@ -60,21 +60,31 @@ if (isset($_SESSION['logged']) && $_SESSION['logged']) {
                 
                 <div class="container flex justify-content-center row">
                     <div class="col text-center bg-secondary rounded m-3">
-                        <p>Meilleur temps</p>
-                        <p><?= $bestScore[0]["best"] ?></p>
+                        <p class="gold-1">Meilleur temps</p>
+                        <?php     if($bestScore[0]["best"] > $timeToFinish):?> <p class="iridium-star fw-medium">
+                        <?php elseif($bestScore[0]["best"] > $timePurple): ?>  <p class="grade-purple fw-medium">
+                        <?php elseif($bestScore[0]["best"] > $timePink): ?>    <p class="grade-pink   fw-strong">
+                        <?php else: ?>                                   <p class="grade-silver fw-medium">
+                        <?php endif ?>
+                        <?= floor($bestScore[0]["best"] * 10000) / 10000 ?></p>
                     </div>
                     <div class="col text-center bg-secondary rounded m-3">
-                        <p>Nombres de parties</p>
-                        <p><?= $totalGames[0]["games"] ?></p>
+                        <p class="gold-1">Nombres de parties</p>
+                        <p class="gold-2"><?= $totalGames[0]["games"] ?></p>
                     </div>
                     <div class="col text-center bg-secondary rounded m-3">
-                        <p>Temps total</p>
-                        <p><?= $totalTime[0]["total"] ?></p>
+                        <p class="gold-1">Temps total</p>
+                        <p class="gold-2"><?= floor($totalTime[0]["total"] * 10000) / 10000 ?></p>
                     </div>
                 </div> <br>
-                <div class="container rounded bg-secondary m-auto">
+                <div class="container p-1 rounded bg-secondary m-auto text-center">
                     <?php foreach($allScores as $score): ?>
-                        <p><?= $score["temps"] ?></p>
+                        <?php     if($score['temps'] > $timeToFinish):?> <p class="iridium-star fw-medium">
+                        <?php elseif($score['temps'] > $timePurple): ?>  <p class="grade-purple fw-medium">
+                        <?php elseif($score['temps'] > $timePink): ?>    <p class="grade-pink   fw-strong">
+                        <?php else: ?>                                   <p class="grade-silver fw-medium">
+                        <?php endif ?>
+                        <?= floor($score['temps'] * 10000) / 10000 ?></p>
                     <?php endforeach ?>
                 </div>
 
