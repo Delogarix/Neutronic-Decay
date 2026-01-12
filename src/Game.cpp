@@ -31,7 +31,6 @@ void Game::resolveCollision(Entity *player, Entity *&bullet) {
     if (bullet != nullptr && player->isColliding(bullet) && player != bullet) {
         player->onReceivingHit();
         bullet->onGivingHit();
-        PlaySound(hitSound);
         delete bullet;
         bullet = nullptr;
     }
@@ -131,7 +130,6 @@ void Game::init() { // Needs to be called after window is created
     redArrowS = AnimatedSprite(&redArrowTex, 2, PI/4, 9.5f, 5, 1);
     homingElecS = AnimatedSprite(&homingElecTex, 2, 0, 13.0f, 7, 1);
     boulderS = AnimatedSprite(&boulderTex, 5, 0, 23.0f, 7, 1);
-    hitSound = LoadSound("assets/hit1.wav");
     deathSound = LoadSound("assets/lose.wav");
     winSound = LoadSound("assets/win.wav");
     musicSound = LoadSound("assets/music.mp3");

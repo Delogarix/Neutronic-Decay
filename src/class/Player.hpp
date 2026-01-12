@@ -7,6 +7,8 @@ class Player : public Entity {
     bool isMoving;
     int health, worldLimit;
     float accelerationScale;
+    Timer invcFrameTime;
+    Sound hitSound;
 
     public:
 
