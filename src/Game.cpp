@@ -31,6 +31,7 @@ void Game::resolveCollision(Entity *player, Entity *&bullet) {
     if (bullet != nullptr && player->isColliding(bullet) && player != bullet) {
         player->onReceivingHit();
         bullet->onGivingHit();
+        hasTakeDamage = true;
         delete bullet;
         bullet = nullptr;
     }
@@ -67,6 +68,7 @@ void Game::drawFrame() {
 void Game::reset() {
     flushObjects();
     isOnTransition = false;
+    hasTakeDamage = false;
     transitionTime.deactivate();
     transitionTime.resetSignal();
     sequencer.stop();
@@ -85,16 +87,18 @@ void Game::start() {
 
 void Game::sendScore() {
     std::cout << "NETWORK: Sending score to php : " << sequencer.getTimeElapsed() << std::endl;
+    std::cout << hasTakeDamage << std::boolalpha << std::endl;
     #if defined(PLATFORM_WEB)
         float finalScore = sequencer.getTimeElapsed();
+        int hts = (int)hasTakeDamage;
         EM_ASM({
-        console.log('I received: ' + $0);
+        console.log('I received: ' + $0 + ' win ?' + $1);
         fetch("../server/api_score.php",
         {
             method: "POST",
-            body: JSON.stringify({score: $0})
+            body: JSON.stringify({score: $0, htd: $1})
         }).then(function(res){ console.log(res); }).catch(function(res){ console.log(res + "Catch") })
-        }, finalScore);
+        }, finalScore, hts);
     #endif
 }
 
@@ -112,7 +116,7 @@ Game::Game() : boxLength(GetScreenHeight() - 15),
                                            GetScreenHeight() - (GetScreenHeight() - boxLength) / 2)),
                topRight(raylib::Vector2(rightCorner.x, leftCorner.x)),
                bottomLeft(raylib::Vector2(leftCorner.x, rightCorner.y)),
-               isFreezed(false), isOnMenu(true), isOnTransition(false), transitionTime(Timer(2.5f, 0)), sequencer(this) {
+               isFreezed(false), isOnMenu(true), isOnTransition(false), hasTakeDamage(false), transitionTime(Timer(2.5f, 0)), sequencer(this) {
     for (unsigned int i = 0; i < MAXOBJECTS; i++) {
         this->objects[i] = nullptr;
     }
@@ -137,12 +141,12 @@ void Game::init() { // Needs to be called after window is created
 
     sequencer.stop();
     sequencer.readFileDelta("wave/intro.txt");
-    sequencer.append("wave/intro-homing.txt");
-    sequencer.append("wave/double.txt");
-    sequencer.append("wave/intro-boulder.txt");
-    sequencer.append("wave/medium.txt");
-    sequencer.append("wave/hard.txt");
-    sequencer.append("wave/challenger.txt");
+    //sequencer.append("wave/intro-homing.txt");
+    //sequencer.append("wave/double.txt");
+    //sequencer.append("wave/intro-boulder.txt");
+    //sequencer.append("wave/medium.txt");
+    //sequencer.append("wave/hard.txt");
+    //sequencer.append("wave/challenger.txt");
 
     sequencer.writeFile(1);
     sequencer.readFileWarnings("wave/warning.txt");

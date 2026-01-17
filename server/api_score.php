@@ -17,9 +17,9 @@ try {
     $content = trim(file_get_contents("php://input"));
     $decoded = json_decode($content, true);
 
-    $dbQuery = 'INSERT INTO SCORE (temps, hasWin, username_score) VALUES (:temps, :win, :user)';
+    $dbQuery = 'INSERT INTO SCORE (temps, hasWin, username_score) VALUES (:temps, :htd, :user)';
     $dbInsert = $db_server->prepare($dbQuery);
-    $dbInsert->execute(["temps" => strip_tags($decoded['score']), "win" => 0, "user" => strip_tags($_SESSION['username'])]);
+    $dbInsert->execute(["temps" => strip_tags($decoded['score']), "htd" => strip_tags($decoded['hs']), "user" => strip_tags($_SESSION['username'])]);
 
 } catch (Exception $e) {
     die('Erreur : ' . $e->getMessage());

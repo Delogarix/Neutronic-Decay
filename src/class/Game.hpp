@@ -15,7 +15,7 @@ class Game {
 
     int boxLength;
     raylib::Vector2 leftCorner, rightCorner, topRight, bottomLeft;
-    bool isFreezed, isOnMenu, isOnTransition;
+    bool isFreezed, isOnMenu, isOnTransition, hasTakeDamage;
     Timer transitionTime;
 
     raylib::Texture2D iridiumTex, homingElecTex, redArrowTex, boulderTex;
