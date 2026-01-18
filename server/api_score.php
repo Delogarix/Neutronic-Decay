@@ -19,7 +19,8 @@ try {
 
     $dbQuery = 'INSERT INTO SCORE (temps, hasWin, username_score) VALUES (:temps, :htd, :user)';
     $dbInsert = $db_server->prepare($dbQuery);
-    $dbInsert->execute(["temps" => strip_tags($decoded['score']), "htd" => strip_tags($decoded['hs']), "user" => strip_tags($_SESSION['username'])]);
+    $dbInsert->execute(["temps" => strip_tags($decoded['score']), "htd" => strip_tags($decoded['htd']), "user" => strip_tags($_SESSION['username'])]);
+    // hasWin now refers to 'HasTakeDamage' instead of the initial wining state. htd == FALSE means you beat the game without taking any damages
 
 } catch (Exception $e) {
     die('Erreur : ' . $e->getMessage());
